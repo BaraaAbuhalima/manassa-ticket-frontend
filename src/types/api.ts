@@ -17,8 +17,6 @@ export interface ApiResponse<T> {
 
 export type PaymentMethod = 'Iban' | 'Reflect' | 'Phone'
 
-export type TicketSellStatus = 'Deleted' | 'ForSale' | 'Sold'
-
 export interface BankDetails {
   accountNumber: string
   bankName: string
@@ -31,26 +29,22 @@ export type PaymentInfo =
   | { type: 'reflect'; phoneNumber: string }
   | { type: 'phoneTransfer'; phoneNumber: string }
 
-export interface Ticket {
+export type TicketSellStatus = 'Deleted' | 'ForSale' | 'Sold'
+
+export interface TicketSummary {
   id: string
-  ticketId: string
-  originalOwnerName: string
-  originalOwnerPassportNumber: string
   ticketDateTime: string
   numberOfBags: number
   totalPrice: number
-  sellerName: string
+}
+
+export interface TicketWithStatus extends TicketSummary {
+  status: TicketSellStatus
+  soldAt?: string | null
   sellerEmail: string
   sellerPhone: string
-  createdAt: string
   paymentMethod: PaymentMethod
   paymentInfo: PaymentInfo
-  pin: string
-  status: TicketSellStatus
-  ticketFilePath: string
-  buyerName?: string | null
-  buyerEmail?: string | null
-  stripePaymentIntentId?: string | null
 }
 
 export interface PostTicketResponse {
@@ -76,6 +70,12 @@ export interface SubscribeRequest {
   date: string
 }
 
+export interface ContactUsRequest {
+  name: string
+  email: string
+  message: string
+}
+
 export interface PaymentInfoRequest {
   bankDetails?: BankDetails
   phoneNumber?: string
@@ -89,4 +89,12 @@ export interface PostTicketFormValues {
   price: number
   paymentMethod: PaymentMethod
   paymentInfo: PaymentInfoRequest
+}
+
+export interface UpdateTicketRequest {
+  payment?: {
+    paymentMethod: PaymentMethod
+    paymentInfoRequest: PaymentInfoRequest
+  }
+  price?: number
 }

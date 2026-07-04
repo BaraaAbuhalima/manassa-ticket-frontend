@@ -36,6 +36,21 @@ export async function apiGet<T>(path: string, params?: Record<string, string | n
   return parseResponse<T>(res)
 }
 
+export async function apiGetWithHeaders<T>(
+  path: string,
+  params?: Record<string, string | number | undefined>,
+): Promise<{ body: ApiResponse<T>; headers: Headers }> {
+  const url = new URL(API_BASE_URL + path)
+  if (params) {
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined) url.searchParams.set(key, String(value))
+    }
+  }
+  const res = await fetch(url, { method: 'GET' })
+  const body = await parseResponse<T>(res)
+  return { body, headers: res.headers }
+}
+
 export async function apiPostJson<T>(path: string, body: unknown): Promise<ApiResponse<T>> {
   const res = await fetch(API_BASE_URL + path, {
     method: 'POST',
@@ -53,7 +68,24 @@ export async function apiPostForm<T>(path: string, form: FormData): Promise<ApiR
   return parseResponse<T>(res)
 }
 
-export async function apiDelete<T>(path: string): Promise<ApiResponse<T>> {
-  const res = await fetch(API_BASE_URL + path, { method: 'DELETE' })
+export async function apiDelete<T>(path: string, headers?: HeadersInit): Promise<ApiResponse<T>> {
+  const res = await fetch(API_BASE_URL + path, { method: 'DELETE', headers })
+  return parseResponse<T>(res)
+}
+
+export async function apiPostAuth<T>(path: string, bearerToken: string): Promise<ApiResponse<T>> {
+  const res = await fetch(API_BASE_URL + path, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${bearerToken}` },
+  })
+  return parseResponse<T>(res)
+}
+
+export async function apiPatchAuth<T>(path: string, bearerToken: string, body: unknown): Promise<ApiResponse<T>> {
+  const res = await fetch(API_BASE_URL + path, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${bearerToken}` },
+    body: JSON.stringify(body),
+  })
   return parseResponse<T>(res)
 }

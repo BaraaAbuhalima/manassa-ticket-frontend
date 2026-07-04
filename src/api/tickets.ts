@@ -1,24 +1,39 @@
-import { apiDelete, apiGet, apiPostForm } from './client'
-import type { PostTicketFormValues, PostTicketResponse, Ticket } from '../types/api'
+import { apiDelete, apiGet, apiGetWithHeaders, apiPatchAuth, apiPostAuth, apiPostForm } from './client'
+import type {
+  PostTicketFormValues,
+  PostTicketResponse,
+  TicketSummary,
+  TicketWithStatus,
+  UpdateTicketRequest,
+} from '../types/api'
 
 export function getTicketById(id: string) {
-  return apiGet<Ticket>(`/api/ticket/${id}`)
+  return apiGet<TicketSummary>(`/api/ticket/${id}`)
 }
 
-export function getTicketByPin(pin: string) {
-  return apiGet<Ticket>(`/api/ticket/by-pin/${pin}`)
+export async function getTicketByPin(pin: string) {
+  const { body, headers } = await apiGetWithHeaders<TicketWithStatus>(`/api/ticket/by-pin/${pin}`)
+  return { ...body, deleteToken: headers.get('X-Delete-Token') }
 }
 
 export function getTicketsForDate(date: string, page = 1) {
-  return apiGet<Ticket[]>('/api/ticket/date', { date, page })
+  return apiGet<TicketSummary[]>('/api/ticket/date', { date, page })
 }
 
 export function getTicketsForDateRange(startDate: string, endDate: string, page = 1) {
-  return apiGet<Ticket[]>('/api/ticket/range', { startDate, endDate, page })
+  return apiGet<TicketSummary[]>('/api/ticket/range', { startDate, endDate, page })
 }
 
-export function deleteTicketByToken(token: string) {
-  return apiDelete<null>(`/api/ticket/${token}`)
+export function deleteTicket(deleteToken: string) {
+  return apiDelete<null>('/api/ticket', { Authorization: `Bearer ${deleteToken}` })
+}
+
+export function republishTicket(deleteToken: string) {
+  return apiPostAuth<null>('/api/ticket/republish', deleteToken)
+}
+
+export function modifyTicket(deleteToken: string, request: UpdateTicketRequest) {
+  return apiPatchAuth<null>('/api/ticket', deleteToken, request)
 }
 
 function appendPaymentInfo(form: FormData, values: PostTicketFormValues) {

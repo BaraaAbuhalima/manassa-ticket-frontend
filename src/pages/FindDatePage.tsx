@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { getTicketsForDate, getTicketsForDateRange } from '../api/tickets'
+import { getTicketsForDate } from '../api/tickets'
 import { ApiError } from '../api/client'
 import type { MetaData, TicketSummary } from '../types/api'
 import { Alert, Button, Input } from '../components/ui'
@@ -8,16 +8,14 @@ import TicketCard from '../components/TicketCard'
 import { toDateOnly } from '../lib/format'
 import { useLanguage } from '../i18n/LanguageContext'
 
-export default function BrowsePage() {
+export default function FindDatePage() {
   const { t } = useLanguage()
   const today = toDateOnly(new Date())
   const [searchParams, setSearchParams] = useSearchParams()
   const date = searchParams.get('date') ?? today
-  const endDate = searchParams.get('endDate') ?? ''
   const page = Number(searchParams.get('page') ?? '1')
 
   const [pendingDate, setPendingDate] = useState(date)
-  const [pendingEndDate, setPendingEndDate] = useState(endDate)
 
   const [tickets, setTickets] = useState<TicketSummary[]>([])
   const [meta, setMeta] = useState<MetaData | null>(null)
@@ -29,9 +27,7 @@ export default function BrowsePage() {
     setLoading(true)
     setError(null)
 
-    const request = endDate ? getTicketsForDateRange(date, endDate, page) : getTicketsForDate(date, page)
-
-    request
+    getTicketsForDate(date, page)
       .then((res) => {
         if (cancelled) return
         setTickets(res.data ?? [])
@@ -49,15 +45,13 @@ export default function BrowsePage() {
     return () => {
       cancelled = true
     }
-  }, [date, endDate, page, t])
+  }, [date, page, t])
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault()
     const next = new URLSearchParams(searchParams)
     if (pendingDate) next.set('date', pendingDate)
     else next.delete('date')
-    if (pendingEndDate) next.set('endDate', pendingEndDate)
-    else next.delete('endDate')
     next.delete('page')
     setSearchParams(next)
   }
@@ -72,23 +66,23 @@ export default function BrowsePage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold text-slate-900">{t('browse.title')}</h1>
+      <div>
+        <h1 className="text-2xl font-semibold text-slate-900">{t('findDate.title')}</h1>
+        <p className="mt-1 text-sm text-slate-600">{t('findDate.subtitle')}</p>
+      </div>
 
       <form onSubmit={handleSearch} className="flex flex-wrap items-end gap-4">
         <div>
-          <label className="mb-1 block text-sm font-medium text-slate-700">{t('common.fromDate')}</label>
-          <Input type="date" value={pendingDate} onChange={(e) => setPendingDate(e.target.value)} min={today} />
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium text-slate-700">{t('common.toDateOptional')}</label>
+          <label className="mb-1 block text-sm font-medium text-slate-700">{t('common.travelDate')}</label>
           <Input
             type="date"
-            value={pendingEndDate}
-            onChange={(e) => setPendingEndDate(e.target.value)}
-            min={pendingDate || today}
+            value={pendingDate}
+            onChange={(e) => setPendingDate(e.target.value)}
+            min={today}
+            className="max-w-xs"
           />
         </div>
-        <Button type="submit">{t('browse.searchButton')}</Button>
+        <Button type="submit">{t('findDate.searchButton')}</Button>
       </form>
 
       {loading && <p className="text-slate-500">{t('common.loadingTickets')}</p>}

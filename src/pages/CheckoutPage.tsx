@@ -7,6 +7,7 @@ import { purchaseTicket } from '../api/payments'
 import { ApiError } from '../api/client'
 import { Alert, Button, Card, Input } from '../components/ui'
 import { formatCurrency } from '../lib/format'
+import { useLanguage } from '../i18n/LanguageContext'
 
 interface PurchaseDetails {
   clientSecret: string
@@ -26,6 +27,7 @@ function getStripePromise(publishableKey: string) {
 }
 
 function PaymentForm({ details }: { details: PurchaseDetails }) {
+  const { t, language } = useLanguage()
   const stripe = useStripe()
   const elements = useElements()
   const [submitting, setSubmitting] = useState(false)
@@ -45,7 +47,7 @@ function PaymentForm({ details }: { details: PurchaseDetails }) {
     })
 
     if (confirmError) {
-      setError(confirmError.message ?? 'Payment failed. Please try again.')
+      setError(confirmError.message ?? t('checkout.paymentFailed'))
       setSubmitting(false)
       return
     }
@@ -55,7 +57,7 @@ function PaymentForm({ details }: { details: PurchaseDetails }) {
   }
 
   if (succeeded) {
-    return <Alert kind="success">Payment successful! Check your email for confirmation.</Alert>
+    return <Alert kind="success">{t('checkout.paymentSuccess')}</Alert>
   }
 
   return (
@@ -63,13 +65,16 @@ function PaymentForm({ details }: { details: PurchaseDetails }) {
       <PaymentElement />
       {error && <Alert>{error}</Alert>}
       <Button type="submit" disabled={!stripe || submitting}>
-        {submitting ? 'Processing…' : `Pay ${formatCurrency(details.amount, details.currency.toUpperCase())}`}
+        {submitting
+          ? t('checkout.processingButton')
+          : t('checkout.payButton', { amount: formatCurrency(details.amount, language, details.currency.toUpperCase()) })}
       </Button>
     </form>
   )
 }
 
 export default function CheckoutPage() {
+  const { t } = useLanguage()
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [buyerName, setBuyerName] = useState('')
@@ -90,7 +95,7 @@ export default function CheckoutPage() {
       setDetails({ clientSecret: res.data.clientSecret, amount: res.data.amount, currency: res.data.currency })
       setStripePromise(getStripePromise(res.data.publishableKey))
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Unable to start checkout')
+      setError(err instanceof ApiError ? err.message : t('checkout.genericError'))
     } finally {
       setSubmitting(false)
     }
@@ -99,20 +104,20 @@ export default function CheckoutPage() {
   return (
     <div className="mx-auto max-w-md">
       <button type="button" onClick={() => navigate(-1)} className="text-sm text-slate-500 hover:text-slate-900">
-        &larr; Back
+        {t('common.back')}
       </button>
 
       <Card className="mt-4">
-        <h1 className="text-xl font-semibold text-slate-900">Checkout</h1>
+        <h1 className="text-xl font-semibold text-slate-900">{t('checkout.title')}</h1>
 
         {!details && (
           <form onSubmit={handleStartCheckout} className="mt-4 flex flex-col gap-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">Your name</label>
+              <label className="mb-1 block text-sm font-medium text-slate-700">{t('checkout.nameLabel')}</label>
               <Input value={buyerName} onChange={(e) => setBuyerName(e.target.value)} required maxLength={50} />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">Your email</label>
+              <label className="mb-1 block text-sm font-medium text-slate-700">{t('checkout.emailLabel')}</label>
               <Input
                 type="email"
                 value={buyerEmail}
@@ -123,7 +128,7 @@ export default function CheckoutPage() {
             </div>
             {error && <Alert>{error}</Alert>}
             <Button type="submit" disabled={submitting}>
-              {submitting ? 'Preparing payment…' : 'Continue to payment'}
+              {submitting ? t('checkout.preparingButton') : t('checkout.continueButton')}
             </Button>
           </form>
         )}
@@ -135,10 +140,17 @@ export default function CheckoutPage() {
             </Elements>
           </div>
         )}
+
+        <p className="mt-4 border-t border-slate-100 pt-4 text-xs leading-relaxed text-slate-500">
+          {t('checkout.secureNotice')}
+        </p>
       </Card>
 
       <p className="mt-4 text-center text-xs text-slate-400">
-        Having trouble? <Link to="/browse" className="underline">Back to browse</Link>
+        {t('checkout.troubleText')}{' '}
+        <Link to="/browse" className="underline">
+          {t('checkout.backToBrowseLink')}
+        </Link>
       </p>
     </div>
   )

@@ -1,9 +1,16 @@
-export function formatCurrency(amount: number, currency = 'JOD') {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount)
+import type { Language } from '../i18n/translations'
+
+const locales: Record<Language, string> = {
+  en: 'en-US-u-nu-latn',
+  ar: 'ar-JO-u-nu-latn',
 }
 
-export function formatDateTime(iso: string) {
-  return new Date(iso).toLocaleString('en-US', {
+export function formatCurrency(amount: number, language: Language, currency = 'JOD') {
+  return new Intl.NumberFormat(locales[language], { style: 'currency', currency }).format(amount)
+}
+
+export function formatDateTime(iso: string, language: Language) {
+  return new Date(iso).toLocaleString(locales[language], {
     weekday: 'short',
     month: 'short',
     day: 'numeric',

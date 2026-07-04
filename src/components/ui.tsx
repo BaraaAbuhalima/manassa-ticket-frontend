@@ -1,9 +1,21 @@
 import type { ButtonHTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes, SelectHTMLAttributes } from 'react'
 
-export function Button({ className = '', ...props }: ButtonHTMLAttributes<HTMLButtonElement>) {
+type ButtonVariant = 'primary' | 'secondary' | 'danger'
+
+const buttonVariantClasses: Record<ButtonVariant, string> = {
+  primary: 'bg-slate-900 text-white hover:bg-slate-700',
+  secondary: 'border border-slate-300 bg-white text-slate-900 hover:bg-slate-50',
+  danger: 'bg-red-600 text-white hover:bg-red-700',
+}
+
+export function Button({
+  className = '',
+  variant = 'primary',
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: ButtonVariant }) {
   return (
     <button
-      className={`inline-flex items-center justify-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      className={`inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${buttonVariantClasses[variant]} ${className}`}
       {...props}
     />
   )

@@ -1,0 +1,364 @@
+import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { getTicketByPin, deleteTicket, republishTicket, modifyTicket } from '../api/tickets'
+import { ApiError } from '../api/client'
+import type { PaymentMethod, TicketWithStatus } from '../types/api'
+import { Alert, Button, Card, Field, Input, Select } from '../components/ui'
+import { formatCurrency, formatDateTime } from '../lib/format'
+import { useLanguage } from '../i18n/LanguageContext'
+
+const statusKey = {
+  ForSale: 'statusForSale',
+  Sold: 'statusSold',
+  Deleted: 'statusDeleted',
+} as const
+
+const paymentMethodKey = {
+  Iban: 'iban',
+  Reflect: 'reflect',
+  Phone: 'phone',
+} as const
+
+export default function ManageTicketPage() {
+  const { t, language } = useLanguage()
+  const [searchParams] = useSearchParams()
+  const [pin, setPin] = useState(searchParams.get('pin') ?? '')
+
+  const [ticket, setTicket] = useState<TicketWithStatus | null>(null)
+  const [deleteToken, setDeleteToken] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [lookupError, setLookupError] = useState<string | null>(null)
+
+  const [confirmingDelete, setConfirmingDelete] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
+
+  const [republishing, setRepublishing] = useState(false)
+  const [republishError, setRepublishError] = useState<string | null>(null)
+
+  const [modifyOpen, setModifyOpen] = useState(false)
+  const [savingModify, setSavingModify] = useState(false)
+  const [modifyError, setModifyError] = useState<string | null>(null)
+  const [price, setPrice] = useState('')
+  const [modifyPaymentMethod, setModifyPaymentMethod] = useState<PaymentMethod>('Iban')
+  const [accountNumber, setAccountNumber] = useState('')
+  const [bankName, setBankName] = useState('')
+  const [country, setCountry] = useState('')
+  const [accountHolderName, setAccountHolderName] = useState('')
+  const [transferPhoneNumber, setTransferPhoneNumber] = useState('')
+
+  const [actionSuccessMessage, setActionSuccessMessage] = useState<string | null>(null)
+
+  async function handleLookup(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    setLookupError(null)
+    setTicket(null)
+    setDeleteToken(null)
+    setActionSuccessMessage(null)
+    setConfirmingDelete(false)
+    setDeleteError(null)
+    setRepublishError(null)
+    setModifyOpen(false)
+    setModifyError(null)
+    try {
+      const res = await getTicketByPin(pin.trim())
+      if (!res.data) throw new Error('No ticket data returned')
+      setTicket(res.data)
+      setDeleteToken(res.deleteToken)
+    } catch (err) {
+      setLookupError(err instanceof ApiError ? (err.errors[0] ?? err.message) : t('manageTicket.lookupError'))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleDelete() {
+    if (!deleteToken) {
+      setDeleteError(t('manageTicket.deleteError'))
+      return
+    }
+    setDeleting(true)
+    setDeleteError(null)
+    try {
+      await deleteTicket(deleteToken)
+      setActionSuccessMessage(t('manageTicket.deleteSuccessMessage'))
+      setTicket(null)
+      setDeleteToken(null)
+      setConfirmingDelete(false)
+    } catch (err) {
+      setDeleteError(err instanceof ApiError ? (err.errors[0] ?? err.message) : t('manageTicket.deleteError'))
+    } finally {
+      setDeleting(false)
+    }
+  }
+
+  async function handleRepublish() {
+    if (!deleteToken) {
+      setRepublishError(t('manageTicket.republishError'))
+      return
+    }
+    setRepublishing(true)
+    setRepublishError(null)
+    try {
+      await republishTicket(deleteToken)
+      setActionSuccessMessage(t('manageTicket.republishSuccessMessage'))
+      setTicket(null)
+      setDeleteToken(null)
+    } catch (err) {
+      setRepublishError(err instanceof ApiError ? (err.errors[0] ?? err.message) : t('manageTicket.republishError'))
+    } finally {
+      setRepublishing(false)
+    }
+  }
+
+  function openModify() {
+    if (!ticket) return
+    setPrice(String(ticket.totalPrice))
+    setModifyPaymentMethod(ticket.paymentMethod)
+    if (ticket.paymentInfo.type === 'bankTransfer') {
+      setAccountNumber(ticket.paymentInfo.bankDetails.accountNumber)
+      setBankName(ticket.paymentInfo.bankDetails.bankName)
+      setCountry(ticket.paymentInfo.bankDetails.country)
+      setAccountHolderName(ticket.paymentInfo.bankDetails.accountHolderName)
+      setTransferPhoneNumber('')
+    } else {
+      setAccountNumber('')
+      setBankName('')
+      setCountry('')
+      setAccountHolderName('')
+      setTransferPhoneNumber(ticket.paymentInfo.phoneNumber)
+    }
+    setModifyError(null)
+    setModifyOpen(true)
+  }
+
+  async function handleModifySubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!deleteToken) {
+      setModifyError(t('manageTicket.modifyError'))
+      return
+    }
+    setSavingModify(true)
+    setModifyError(null)
+    try {
+      await modifyTicket(deleteToken, {
+        price: Number(price),
+        payment: {
+          paymentMethod: modifyPaymentMethod,
+          paymentInfoRequest:
+            modifyPaymentMethod === 'Iban'
+              ? { bankDetails: { accountNumber, bankName, country, accountHolderName } }
+              : { phoneNumber: transferPhoneNumber },
+        },
+      })
+      setActionSuccessMessage(t('manageTicket.modifySuccessMessage'))
+      setModifyOpen(false)
+      setTicket({
+        ...ticket!,
+        totalPrice: Number(price),
+        paymentMethod: modifyPaymentMethod,
+        paymentInfo:
+          modifyPaymentMethod === 'Iban'
+            ? { type: 'bankTransfer', bankDetails: { accountNumber, bankName, country, accountHolderName } }
+            : { type: modifyPaymentMethod === 'Reflect' ? 'reflect' : 'phoneTransfer', phoneNumber: transferPhoneNumber },
+      })
+    } catch (err) {
+      setModifyError(err instanceof ApiError ? (err.errors[0] ?? err.message) : t('manageTicket.modifyError'))
+    } finally {
+      setSavingModify(false)
+    }
+  }
+
+  return (
+    <div className="mx-auto max-w-md">
+      <h1 className="text-2xl font-semibold text-slate-900">{t('manageTicket.title')}</h1>
+      <p className="mt-1 text-sm text-slate-600">{t('manageTicket.subtitle')}</p>
+
+      <Card className="mt-6">
+        <form onSubmit={handleLookup} className="flex flex-col gap-4">
+          <Field label={t('manageTicket.pinLabel')}>
+            <Input value={pin} onChange={(e) => setPin(e.target.value)} required maxLength={20} />
+          </Field>
+          {lookupError && <Alert>{lookupError}</Alert>}
+          <Button type="submit" disabled={loading}>
+            {loading ? t('manageTicket.lookingUpButton') : t('manageTicket.lookupButton')}
+          </Button>
+        </form>
+      </Card>
+
+      {actionSuccessMessage && (
+        <div className="mt-6">
+          <Alert kind="success">{actionSuccessMessage}</Alert>
+        </div>
+      )}
+
+      {ticket && (
+        <Card className="mt-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-slate-900">{formatDateTime(ticket.ticketDateTime, language)}</h2>
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+              {t(`manageTicket.${statusKey[ticket.status]}`)}
+            </span>
+          </div>
+          <p className="mt-1 text-sm text-slate-500">{t('common.bag', { count: ticket.numberOfBags })}</p>
+
+          <div className="mt-6 flex items-center justify-between border-t border-slate-200 pt-4">
+            <span className="text-sm text-slate-500">{t('common.price')}</span>
+            <span className="text-2xl font-semibold text-slate-900">{formatCurrency(ticket.totalPrice, language)}</span>
+          </div>
+
+          <div className="mt-4 border-t border-slate-200 pt-4">
+            <h3 className="text-sm font-semibold text-slate-900">{t('manageTicket.sellerInfoTitle')}</h3>
+            <dl className="mt-2 flex flex-col gap-1 text-sm">
+              <div className="flex items-center justify-between">
+                <dt className="text-slate-500">{t('manageTicket.sellerEmailLabel')}</dt>
+                <dd className="text-slate-900">{ticket.sellerEmail}</dd>
+              </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-slate-500">{t('manageTicket.sellerPhoneLabel')}</dt>
+                <dd className="text-slate-900">{ticket.sellerPhone}</dd>
+              </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-slate-500">{t('manageTicket.currentPaymentMethodLabel')}</dt>
+                <dd className="text-slate-900">{t(`sell.paymentOptions.${paymentMethodKey[ticket.paymentMethod]}`)}</dd>
+              </div>
+            </dl>
+          </div>
+
+          {ticket.status === 'Sold' && (
+            <div className="mt-4 flex flex-col gap-1">
+              {ticket.soldAt && (
+                <p className="text-xs text-slate-500">
+                  {t('manageTicket.soldAtMessage', { date: formatDateTime(ticket.soldAt, language) })}
+                </p>
+              )}
+              <p className="text-xs leading-relaxed text-slate-500">{t('manageTicket.soldNotice')}</p>
+            </div>
+          )}
+
+          {ticket.status === 'ForSale' && !confirmingDelete && !modifyOpen && (
+            <div className="mt-6 flex flex-col gap-3">
+              <Button variant="secondary" disabled={!deleteToken} onClick={openModify}>
+                {t('manageTicket.modifyButton')}
+              </Button>
+              <Button variant="danger" disabled={!deleteToken} onClick={() => setConfirmingDelete(true)}>
+                {t('manageTicket.deleteButton')}
+              </Button>
+            </div>
+          )}
+
+          {ticket.status === 'ForSale' && confirmingDelete && (
+            <div className="mt-6 flex flex-col gap-3">
+              <Alert>{t('manageTicket.deleteConfirmMessage')}</Alert>
+              {deleteError && <Alert>{deleteError}</Alert>}
+              <div className="flex gap-3">
+                <Button variant="danger" className="flex-1" disabled={deleting} onClick={handleDelete}>
+                  {deleting ? t('manageTicket.deletingButton') : t('manageTicket.confirmDeleteButton')}
+                </Button>
+                <Button
+                  variant="secondary"
+                  className="flex-1"
+                  disabled={deleting}
+                  onClick={() => setConfirmingDelete(false)}
+                >
+                  {t('manageTicket.cancelButton')}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {ticket.status === 'ForSale' && modifyOpen && (
+            <form onSubmit={handleModifySubmit} className="mt-6 flex flex-col gap-4">
+              <Field label={t('sell.priceLabel')}>
+                <Input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  required
+                />
+              </Field>
+
+              <Field label={t('sell.paymentMethodLabel')}>
+                <Select
+                  value={modifyPaymentMethod}
+                  onChange={(e) => setModifyPaymentMethod(e.target.value as PaymentMethod)}
+                >
+                  <option value="Iban">{t('sell.paymentOptions.iban')}</option>
+                  <option value="Reflect">{t('sell.paymentOptions.reflect')}</option>
+                  <option value="Phone">{t('sell.paymentOptions.phone')}</option>
+                </Select>
+              </Field>
+
+              {modifyPaymentMethod === 'Iban' ? (
+                <>
+                  <Field label={t('sell.accountHolderLabel')}>
+                    <Input
+                      value={accountHolderName}
+                      onChange={(e) => setAccountHolderName(e.target.value)}
+                      required
+                      maxLength={40}
+                    />
+                  </Field>
+                  <Field label={t('sell.bankNameLabel')}>
+                    <Input value={bankName} onChange={(e) => setBankName(e.target.value)} required maxLength={40} />
+                  </Field>
+                  <Field label={t('sell.countryLabel')}>
+                    <Input value={country} onChange={(e) => setCountry(e.target.value)} required maxLength={30} />
+                  </Field>
+                  <Field label={t('sell.ibanLabel')}>
+                    <Input
+                      value={accountNumber}
+                      onChange={(e) => setAccountNumber(e.target.value)}
+                      required
+                      maxLength={30}
+                    />
+                  </Field>
+                </>
+              ) : (
+                <Field
+                  label={modifyPaymentMethod === 'Reflect' ? t('sell.reflectPhoneLabel') : t('sell.phoneTransferLabel')}
+                >
+                  <Input
+                    value={transferPhoneNumber}
+                    onChange={(e) => setTransferPhoneNumber(e.target.value)}
+                    required
+                    maxLength={20}
+                  />
+                </Field>
+              )}
+
+              {modifyError && <Alert>{modifyError}</Alert>}
+
+              <div className="flex gap-3">
+                <Button type="submit" className="flex-1" disabled={savingModify}>
+                  {savingModify ? t('manageTicket.modifyingButton') : t('manageTicket.saveButton')}
+                </Button>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="flex-1"
+                  disabled={savingModify}
+                  onClick={() => setModifyOpen(false)}
+                >
+                  {t('manageTicket.cancelButton')}
+                </Button>
+              </div>
+            </form>
+          )}
+
+          {ticket.status === 'Deleted' && (
+            <div className="mt-6 flex flex-col gap-3">
+              {republishError && <Alert>{republishError}</Alert>}
+              <Button disabled={!deleteToken || republishing} onClick={handleRepublish}>
+                {republishing ? t('manageTicket.republishingButton') : t('manageTicket.republishButton')}
+              </Button>
+            </div>
+          )}
+        </Card>
+      )}
+    </div>
+  )
+}
