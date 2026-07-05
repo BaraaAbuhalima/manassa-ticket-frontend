@@ -4,7 +4,8 @@ import { getTicketByPin, deleteTicket, republishTicket, modifyTicket } from '../
 import { ApiError } from '../api/client'
 import type { PaymentMethod, TicketWithStatus } from '../types/api'
 import { Alert, Button, Card, Field, Input, Select } from '../components/ui'
-import { formatCurrency, formatDateTime } from '../lib/format'
+import { PriceDisplay } from '../components/PriceDisplay'
+import { formatDateTime } from '../lib/format'
 import { useLanguage } from '../i18n/LanguageContext'
 
 const statusKey = {
@@ -114,7 +115,7 @@ export default function ManageTicketPage() {
 
   function openModify() {
     if (!ticket) return
-    setPrice(String(ticket.totalPrice))
+    setPrice(String(ticket.totalPriceJod))
     setModifyPaymentMethod(ticket.paymentMethod)
     if (ticket.paymentInfo.type === 'bankTransfer') {
       setAccountNumber(ticket.paymentInfo.bankDetails.accountNumber)
@@ -152,17 +153,13 @@ export default function ManageTicketPage() {
               : { phoneNumber: transferPhoneNumber },
         },
       })
+      const res = await getTicketByPin(pin.trim())
+      if (res.data) {
+        setTicket(res.data)
+        setDeleteToken(res.deleteToken)
+      }
       setActionSuccessMessage(t('manageTicket.modifySuccessMessage'))
       setModifyOpen(false)
-      setTicket({
-        ...ticket!,
-        totalPrice: Number(price),
-        paymentMethod: modifyPaymentMethod,
-        paymentInfo:
-          modifyPaymentMethod === 'Iban'
-            ? { type: 'bankTransfer', bankDetails: { accountNumber, bankName, country, accountHolderName } }
-            : { type: modifyPaymentMethod === 'Reflect' ? 'reflect' : 'phoneTransfer', phoneNumber: transferPhoneNumber },
-      })
     } catch (err) {
       setModifyError(err instanceof ApiError ? (err.errors[0] ?? err.message) : t('manageTicket.modifyError'))
     } finally {
@@ -205,7 +202,7 @@ export default function ManageTicketPage() {
 
           <div className="mt-6 flex items-center justify-between border-t border-slate-200 pt-4">
             <span className="text-sm text-slate-500">{t('common.price')}</span>
-            <span className="text-2xl font-semibold text-slate-900">{formatCurrency(ticket.totalPrice, language)}</span>
+            <PriceDisplay jod={ticket.totalPriceJod} usd={ticket.totalPriceUsd} language={language} />
           </div>
 
           <div className="mt-4 border-t border-slate-200 pt-4">
@@ -271,14 +268,21 @@ export default function ManageTicketPage() {
           {ticket.status === 'ForSale' && modifyOpen && (
             <form onSubmit={handleModifySubmit} className="mt-6 flex flex-col gap-4">
               <Field label={t('sell.priceLabel')}>
-                <Input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  required
-                />
+                <div className="relative">
+                  <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-slate-500">
+                    JD
+                  </span>
+                  <Input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    required
+                    className="pl-9"
+                  />
+                </div>
+                <p className="mt-1 text-xs text-slate-500">{t('manageTicket.priceLimitNote')}</p>
               </Field>
 
               <Field label={t('sell.paymentMethodLabel')}>

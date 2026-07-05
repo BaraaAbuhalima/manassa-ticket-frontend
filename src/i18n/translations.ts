@@ -68,6 +68,7 @@ interface Dictionary {
     emailLabel: string;
     phoneLabel: string;
     priceLabel: string;
+    priceLimitNote: string;
     paymentMethodLabel: string;
     paymentOptions: {
       iban: string;
@@ -165,6 +166,7 @@ interface Dictionary {
     saveButton: string;
     modifySuccessMessage: string;
     modifyError: string;
+    priceLimitNote: string;
   };
 }
 
@@ -242,7 +244,8 @@ const en: Dictionary = {
     nameLabel: "Full name",
     emailLabel: "Email address",
     phoneLabel: "Phone number",
-    priceLabel: "Asking price",
+    priceLabel: "Asking price (JOD)",
+    priceLimitNote: "Your asking price cannot exceed the ticket's original purchase price by more than 1 JOD.",
     paymentMethodLabel: "Preferred payment method",
     paymentOptions: {
       iban: "Bank transfer (IBAN)",
@@ -351,6 +354,7 @@ const en: Dictionary = {
     saveButton: "Save Changes",
     modifySuccessMessage: "Your payment details have been updated.",
     modifyError: "Your payment details could not be updated. Please try again later.",
+    priceLimitNote: "You can raise the price by at most 1 JOD above the ticket's original purchase price.",
   },
 };
 
@@ -426,7 +430,8 @@ const ar: Dictionary = {
     nameLabel: "الاسم الكامل",
     emailLabel: "البريد الإلكتروني",
     phoneLabel: "رقم الهاتف",
-    priceLabel: "السعر المطلوب",
+    priceLabel: "السعر المطلوب (دينار أردني)",
+    priceLimitNote: "لا يمكن أن يتجاوز السعر المطلوب سعر الشراء الأصلي للتذكرة بأكثر من دينار أردني واحد.",
     paymentMethodLabel: "طريقة استلام المبلغ",
     paymentOptions: {
       iban: "تحويل بنكي (IBAN)",
@@ -532,6 +537,7 @@ const ar: Dictionary = {
     saveButton: "حفظ التغييرات",
     modifySuccessMessage: "تم تحديث بيانات الدفع الخاصة بك.",
     modifyError: "تعذّر تحديث بيانات الدفع. يرجى المحاولة مرة أخرى لاحقًا.",
+    priceLimitNote: "يمكنك رفع السعر بحد أقصى دينار أردني واحد فوق سعر الشراء الأصلي للتذكرة.",
   },
 };
 

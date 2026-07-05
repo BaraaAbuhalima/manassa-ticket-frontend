@@ -4,7 +4,8 @@ import { getTicketById } from '../api/tickets'
 import { ApiError } from '../api/client'
 import type { TicketSummary } from '../types/api'
 import { Alert, Button, Card } from '../components/ui'
-import { formatCurrency, formatDateTime } from '../lib/format'
+import { PriceDisplay } from '../components/PriceDisplay'
+import { formatDateTime } from '../lib/format'
 import { useLanguage } from '../i18n/LanguageContext'
 
 export default function TicketDetailPage() {
@@ -50,7 +51,7 @@ export default function TicketDetailPage() {
 
         <div className="mt-6 flex items-center justify-between border-t border-slate-200 pt-4">
           <span className="text-sm text-slate-500">{t('common.price')}</span>
-          <span className="text-2xl font-semibold text-slate-900">{formatCurrency(ticket.totalPrice, language)}</span>
+          <PriceDisplay jod={ticket.totalPriceJod} usd={ticket.totalPriceUsd} language={language} />
         </div>
 
         <p className="mt-4 text-xs leading-relaxed text-slate-500">{t('ticketDetail.reviewNote')}</p>

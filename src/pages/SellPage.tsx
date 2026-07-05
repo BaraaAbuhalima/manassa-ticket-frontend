@@ -107,14 +107,21 @@ export default function SellPage() {
         </Field>
 
         <Field label={t('sell.priceLabel')}>
-          <Input
-            type="number"
-            min="0"
-            step="0.01"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            required
-          />
+          <div className="relative">
+            <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-slate-500">
+              JD
+            </span>
+            <Input
+              type="number"
+              min="0"
+              step="0.01"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              required
+              className="pl-9"
+            />
+          </div>
+          <p className="mt-1 text-xs text-slate-500">{t('sell.priceLimitNote')}</p>
         </Field>
 
         <Field label={t('sell.paymentMethodLabel')}>

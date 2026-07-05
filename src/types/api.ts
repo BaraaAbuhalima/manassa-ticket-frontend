@@ -35,7 +35,8 @@ export interface TicketSummary {
   id: string
   ticketDateTime: string
   numberOfBags: number
-  totalPrice: number
+  totalPriceJod: number
+  totalPriceUsd: number
 }
 
 export interface TicketWithStatus extends TicketSummary {
