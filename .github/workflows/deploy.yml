@@ -95,7 +95,7 @@ jobs:
             cd /opt/jett-exchange-backend
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
             docker compose -f compose.prod.yaml pull frontend
-            docker compose -f compose.prod.yaml up -d frontend
+            docker compose -f compose.prod.yaml up -d --no-deps frontend
             docker logout ghcr.io
             docker image prune -f
         env:
