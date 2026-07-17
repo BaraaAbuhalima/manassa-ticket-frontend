@@ -144,6 +144,12 @@ interface Dictionary {
     statusForSale: string;
     statusSold: string;
     statusDeleted: string;
+    statusProcessing: string;
+    statusRejected: string;
+    pendingVerification: string;
+    processingNotice: string;
+    rejectedNotice: string;
+    rejectionReasonLabel: string;
     soldNotice: string;
     soldAtMessage: string;
     sellerInfoTitle: string;
@@ -263,7 +269,7 @@ const en: Dictionary = {
     postingButton: "Submitting…",
     postButton: "Submit Ticket for Sale",
     successMessage:
-      "Your ticket has been submitted successfully. Your reference PIN is {{pin}}. Please retain this PIN, as it is required to follow up on the status of your listing. Once your ticket has been sold, payment will be disbursed within 1 to 3 business days, depending on the payment method selected.",
+      "Your ticket has been submitted and is now being verified. Your reference PIN is {{pin}}. Please retain this PIN, as it is required to follow up on the status of your listing. You will receive an email confirmation once verification is complete and your ticket is listed for sale. Once your ticket has been sold, payment will be disbursed within 1 to 3 business days, depending on the payment method selected.",
     notice:
       "By submitting this form, you confirm that the ticket belongs to you and is valid for use. Payment will be transferred to you through your selected payment method once your ticket has been sold. Funds are typically disbursed within 1 to 3 business days, depending on the payment method selected.",
   },
@@ -332,6 +338,12 @@ const en: Dictionary = {
     statusForSale: "Listed for Sale",
     statusSold: "Sold",
     statusDeleted: "Removed from Sale",
+    statusProcessing: "Being Verified",
+    statusRejected: "Not Approved",
+    pendingVerification: "Awaiting Verification",
+    processingNotice: "Your ticket is currently being verified. This usually takes only a few minutes, and you will receive an email confirmation once it has been listed for sale. Please check back shortly.",
+    rejectedNotice: "This ticket could not be listed for sale. You are welcome to submit it again from the Sell a Ticket page.",
+    rejectionReasonLabel: "Reason",
     soldNotice: "This ticket has already been sold and can no longer be modified. Please contact us if you require assistance.",
     soldAtMessage: "Sold on {{date}}.",
     sellerInfoTitle: "Seller Information",
@@ -449,7 +461,7 @@ const ar: Dictionary = {
     postingButton: "جارٍ الإرسال…",
     postButton: "تقديم التذكرة للبيع",
     successMessage:
-      "تم تقديم تذكرتك بنجاح. الرمز المرجعي الخاص بك هو {{pin}}. يرجى الاحتفاظ بهذا الرمز، إذ يلزم لمتابعة حالة تذكرتك. بعد إتمام بيع التذكرة، سيتم تحويل المبلغ إليك خلال مدة تتراوح بين يوم عمل واحد وثلاثة أيام عمل، وذلك حسب طريقة الدفع المختارة.",
+      "تم تقديم تذكرتك وهي الآن قيد التحقق. الرمز المرجعي الخاص بك هو {{pin}}. يرجى الاحتفاظ بهذا الرمز، إذ يلزم لمتابعة حالة تذكرتك. ستصلك رسالة تأكيد عبر البريد الإلكتروني فور اكتمال التحقق وعرض تذكرتك للبيع. بعد إتمام بيع التذكرة، سيتم تحويل المبلغ إليك خلال مدة تتراوح بين يوم عمل واحد وثلاثة أيام عمل، وذلك حسب طريقة الدفع المختارة.",
     notice:
       "بتقديم هذا النموذج، فإنك تقرّ بأن التذكرة تعود ملكيتها لك وأنها صالحة للاستخدام. سيتم تحويل المبلغ إليك عبر طريقة الدفع المحددة بعد إتمام بيع التذكرة. تُصرف المبالغ عادةً خلال مدة تتراوح بين يوم عمل واحد وثلاثة أيام عمل، وذلك حسب طريقة الدفع المختارة.",
   },
@@ -515,6 +527,12 @@ const ar: Dictionary = {
     statusForSale: "معروضة للبيع",
     statusSold: "تم بيعها",
     statusDeleted: "تمت إزالتها من العرض",
+    statusProcessing: "قيد التحقق",
+    statusRejected: "لم تتم الموافقة",
+    pendingVerification: "بانتظار التحقق",
+    processingNotice: "تذكرتك قيد التحقق حاليًا. تستغرق هذه العملية عادةً بضع دقائق فقط، وستصلك رسالة تأكيد عبر البريد الإلكتروني فور عرضها للبيع. يرجى المحاولة مرة أخرى بعد قليل.",
+    rejectedNotice: "تعذّر عرض هذه التذكرة للبيع. يمكنك تقديمها مرة أخرى من صفحة بيع التذاكر.",
+    rejectionReasonLabel: "السبب",
     soldNotice: "تم بيع هذه التذكرة بالفعل ولم يعد بالإمكان تعديلها. يرجى التواصل معنا إذا احتجت إلى المساعدة.",
     soldAtMessage: "تم البيع بتاريخ {{date}}.",
     sellerInfoTitle: "معلومات البائع",

@@ -60,14 +60,6 @@ export async function apiPostJson<T>(path: string, body: unknown): Promise<ApiRe
   return parseResponse<T>(res)
 }
 
-export async function apiPostForm<T>(path: string, form: FormData): Promise<ApiResponse<T>> {
-  const res = await fetch(API_BASE_URL + path, {
-    method: 'POST',
-    body: form,
-  })
-  return parseResponse<T>(res)
-}
-
 export async function apiDelete<T>(path: string, headers?: HeadersInit): Promise<ApiResponse<T>> {
   const res = await fetch(API_BASE_URL + path, { method: 'DELETE', headers })
   return parseResponse<T>(res)

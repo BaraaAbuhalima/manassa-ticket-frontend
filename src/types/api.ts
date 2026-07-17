@@ -29,7 +29,7 @@ export type PaymentInfo =
   | { type: 'reflect'; phoneNumber: string }
   | { type: 'phoneTransfer'; phoneNumber: string }
 
-export type TicketSellStatus = 'Deleted' | 'ForSale' | 'Sold'
+export type TicketSellStatus = 'Deleted' | 'ForSale' | 'Sold' | 'Processing' | 'Rejected'
 
 export interface TicketSummary {
   id: string
@@ -39,8 +39,12 @@ export interface TicketSummary {
   totalPriceUsd: number
 }
 
-export interface TicketWithStatus extends TicketSummary {
+export interface TicketWithStatus extends Omit<TicketSummary, 'ticketDateTime' | 'numberOfBags'> {
+  // Not yet extracted while the ticket is Processing (or when it was Rejected).
+  ticketDateTime?: string | null
+  numberOfBags?: number | null
   status: TicketSellStatus
+  rejectionReason?: string | null
   soldAt?: string | null
   sellerEmail: string
   sellerPhone: string
@@ -48,9 +52,15 @@ export interface TicketWithStatus extends TicketSummary {
   paymentInfo: PaymentInfo
 }
 
+export interface CreateUploadUrlResponse {
+  fileKey: string
+  uploadUrl: string
+}
+
 export interface PostTicketResponse {
   ticketId: string
   refPin: string
+  status: TicketSellStatus
 }
 
 export interface PurchaseTicketResponse {

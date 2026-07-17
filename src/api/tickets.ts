@@ -1,5 +1,6 @@
-import { apiDelete, apiGet, apiGetWithHeaders, apiPatchAuth, apiPostAuth, apiPostForm } from './client'
+import { ApiError, apiDelete, apiGet, apiGetWithHeaders, apiPatchAuth, apiPostAuth, apiPostJson } from './client'
 import type {
+  CreateUploadUrlResponse,
   PostTicketFormValues,
   PostTicketResponse,
   TicketSummary,
@@ -36,28 +37,33 @@ export function modifyTicket(deleteToken: string, request: UpdateTicketRequest) 
   return apiPatchAuth<null>('/api/ticket', deleteToken, request)
 }
 
-function appendPaymentInfo(form: FormData, values: PostTicketFormValues) {
-  const prefix = 'PaymentInfoRequest'
-  if (values.paymentInfo.bankDetails) {
-    const bd = values.paymentInfo.bankDetails
-    form.append(`${prefix}.BankDetails.AccountNumber`, bd.accountNumber)
-    form.append(`${prefix}.BankDetails.BankName`, bd.bankName)
-    form.append(`${prefix}.BankDetails.Country`, bd.country)
-    form.append(`${prefix}.BankDetails.AccountHolderName`, bd.accountHolderName)
+// Posting is a three-step flow: get a presigned upload URL from the API, PUT the
+// PDF directly to storage, then submit the listing referencing the uploaded file.
+// The ticket comes back in Processing status and is verified asynchronously.
+export async function postTicket(values: PostTicketFormValues) {
+  const uploadUrlRes = await apiPostJson<CreateUploadUrlResponse>('/api/ticket/upload-url', {})
+  if (!uploadUrlRes.data) {
+    throw new ApiError('No upload URL returned', uploadUrlRes.statusCode, [])
   }
-  if (values.paymentInfo.phoneNumber) {
-    form.append(`${prefix}.PhoneNumber`, values.paymentInfo.phoneNumber)
-  }
-}
+  const { fileKey, uploadUrl } = uploadUrlRes.data
 
-export function postTicket(values: PostTicketFormValues) {
-  const form = new FormData()
-  form.append('File', values.file)
-  form.append('SellerEmail', values.sellerEmail)
-  form.append('SellerPhone', values.sellerPhone)
-  form.append('SellerName', values.sellerName)
-  form.append('Price', String(values.price))
-  form.append('PaymentMethod', values.paymentMethod)
-  appendPaymentInfo(form, values)
-  return apiPostForm<PostTicketResponse>('/api/ticket', form)
+  // The URL is presigned for Content-Type application/pdf; the header must match.
+  const uploadRes = await fetch(uploadUrl, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/pdf' },
+    body: values.file,
+  })
+  if (!uploadRes.ok) {
+    throw new Error(`Ticket file upload failed (${uploadRes.status})`)
+  }
+
+  return apiPostJson<PostTicketResponse>('/api/ticket', {
+    fileKey,
+    sellerEmail: values.sellerEmail,
+    sellerPhone: values.sellerPhone,
+    sellerName: values.sellerName,
+    price: values.price,
+    paymentMethod: values.paymentMethod,
+    paymentInfoRequest: values.paymentInfo,
+  })
 }
