@@ -5,14 +5,14 @@ import { ApiError } from '../api/client'
 import type { MetaData, TicketSummary } from '../types/api'
 import { Alert, Button, Input } from '../components/ui'
 import TicketCard from '../components/TicketCard'
-import { toDateOnly } from '../lib/format'
+import { defaultTravelDate, toDateOnly } from '../lib/format'
 import { useLanguage } from '../i18n/LanguageContext'
 
 export default function FindDatePage() {
   const { t } = useLanguage()
   const today = toDateOnly(new Date())
   const [searchParams, setSearchParams] = useSearchParams()
-  const date = searchParams.get('date') ?? today
+  const date = searchParams.get('date') ?? defaultTravelDate()
   const page = Number(searchParams.get('page') ?? '1')
 
   const [pendingDate, setPendingDate] = useState(date)

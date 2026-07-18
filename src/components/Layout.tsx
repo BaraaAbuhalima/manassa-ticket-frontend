@@ -40,6 +40,7 @@ export default function Layout() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const navItems = [
+    { to: '/', label: t('nav.home'), end: true },
     { to: '/find', label: t('nav.findDate') },
     { to: '/browse', label: t('nav.browse') },
     { to: '/sell', label: t('nav.sell') },
@@ -58,12 +59,12 @@ export default function Layout() {
             onClick={() => setMenuOpen(false)}
           >
             <img src="/favicon.svg" alt="" className="h-7 w-7" />
-            Jett Ticket Exchange
+            Manassa Ticket Exchange
           </NavLink>
 
           <nav className="hidden items-center gap-6 sm:flex">
             {navItems.map((item) => (
-              <NavLink key={item.to} to={item.to} className={navLinkClass}>
+              <NavLink key={item.to} to={item.to} end={item.end} className={navLinkClass}>
                 {item.label}
               </NavLink>
             ))}
@@ -91,7 +92,7 @@ export default function Layout() {
           <nav className="border-t border-slate-200 px-4 py-3 sm:hidden">
             <div className="flex flex-col gap-1">
               {navItems.map((item) => (
-                <NavLink key={item.to} to={item.to} className={mobileNavLinkClass} onClick={() => setMenuOpen(false)}>
+                <NavLink key={item.to} to={item.to} end={item.end} className={mobileNavLinkClass} onClick={() => setMenuOpen(false)}>
                   {item.label}
                 </NavLink>
               ))}
@@ -110,7 +111,7 @@ export default function Layout() {
           <div className="text-start">
             <p className="flex items-center gap-2 text-base font-semibold text-slate-900">
               <img src="/favicon.svg" alt="" className="h-6 w-6" />
-              Jett Ticket Exchange
+              Manassa Ticket Exchange
             </p>
             <p className="mt-2 max-w-xs text-sm text-slate-500">{t('footer.tagline')}</p>
           </div>

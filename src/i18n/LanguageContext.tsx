@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { translate, type Language } from './translations'
 
-const STORAGE_KEY = 'jett-language'
+const STORAGE_KEY = 'manassa-language'
 
 interface LanguageContextValue {
   language: Language
@@ -12,9 +12,21 @@ interface LanguageContextValue {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null)
 
+export function normalizeLanguage(value: string | null | undefined): Language | null {
+  return value === 'en' || value === 'ar' ? value : null
+}
+
 function getInitialLanguage(): Language {
-  const stored = localStorage.getItem(STORAGE_KEY)
-  return stored === 'en' || stored === 'ar' ? stored : 'ar'
+  // A ?lang=en / ?lang=ar query parameter takes priority so links can force a language,
+  // and we persist it so the override is remembered on later visits without the param.
+  const fromUrl = normalizeLanguage(new URLSearchParams(window.location.search).get('lang'))
+  if (fromUrl) {
+    localStorage.setItem(STORAGE_KEY, fromUrl)
+    return fromUrl
+  }
+
+  const stored = normalizeLanguage(localStorage.getItem(STORAGE_KEY))
+  return stored ?? 'ar'
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {

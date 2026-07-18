@@ -26,11 +26,34 @@ function getStripePromise(publishableKey: string) {
   return promise
 }
 
+type PaymentOutcome = 'succeeded' | 'canceled' | 'pending'
+
+// Authorization succeeding doesn't mean this buyer won the ticket — the backend only
+// decides that once it claims the ticket for this specific PaymentIntent and captures it.
+// Poll the PaymentIntent itself (via Stripe, not our API) until the backend resolves it to
+// a terminal state: succeeded (this buyer won and was charged) or canceled (someone else's
+// authorization won first, and this buyer was never charged).
+async function waitForPaymentOutcome(
+  stripe: Stripe,
+  clientSecret: string,
+  { intervalMs = 1200, timeoutMs = 20000 }: { intervalMs?: number; timeoutMs?: number } = {},
+): Promise<PaymentOutcome> {
+  const deadline = Date.now() + timeoutMs
+  while (Date.now() < deadline) {
+    const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret)
+    if (paymentIntent?.status === 'succeeded') return 'succeeded'
+    if (paymentIntent?.status === 'canceled') return 'canceled'
+    await new Promise((resolve) => setTimeout(resolve, intervalMs))
+  }
+  return 'pending'
+}
+
 function PaymentForm({ details }: { details: PurchaseDetails }) {
   const { t, language } = useLanguage()
   const stripe = useStripe()
   const elements = useElements()
   const [submitting, setSubmitting] = useState(false)
+  const [confirming, setConfirming] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [succeeded, setSucceeded] = useState(false)
 
@@ -52,8 +75,18 @@ function PaymentForm({ details }: { details: PurchaseDetails }) {
       return
     }
 
-    setSucceeded(true)
     setSubmitting(false)
+    setConfirming(true)
+    const outcome = await waitForPaymentOutcome(stripe, details.clientSecret)
+    setConfirming(false)
+
+    if (outcome === 'succeeded') {
+      setSucceeded(true)
+    } else if (outcome === 'canceled') {
+      setError(t('checkout.paymentLost'))
+    } else {
+      setError(t('checkout.confirmTimeout'))
+    }
   }
 
   if (succeeded) {
@@ -64,10 +97,13 @@ function PaymentForm({ details }: { details: PurchaseDetails }) {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <PaymentElement />
       {error && <Alert>{error}</Alert>}
-      <Button type="submit" disabled={!stripe || submitting}>
+      {confirming && <p className="text-sm text-slate-500">{t('checkout.confirmingMessage')}</p>}
+      <Button type="submit" disabled={!stripe || submitting || confirming}>
         {submitting
           ? t('checkout.processingButton')
-          : t('checkout.payButton', { amount: formatCurrency(details.amount, language, details.currency.toUpperCase()) })}
+          : confirming
+            ? t('checkout.confirmingButton')
+            : t('checkout.payButton', { amount: formatCurrency(details.amount, language, details.currency.toUpperCase()) })}
       </Button>
     </form>
   )
@@ -144,6 +180,7 @@ export default function CheckoutPage() {
         <p className="mt-4 border-t border-slate-100 pt-4 text-xs leading-relaxed text-slate-500">
           {t('checkout.secureNotice')}
         </p>
+        <p className="mt-2 text-xs leading-relaxed text-slate-500">{t('checkout.authenticityNotice')}</p>
       </Card>
 
       <p className="mt-4 text-center text-xs text-slate-400">

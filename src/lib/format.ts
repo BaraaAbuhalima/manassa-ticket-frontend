@@ -22,3 +22,10 @@ export function formatDateTime(iso: string, language: Language) {
 export function toDateOnly(date: Date) {
   return date.toISOString().slice(0, 10)
 }
+
+/** Default travel date shown in search forms: one week from today. */
+export function defaultTravelDate() {
+  const date = new Date()
+  date.setDate(date.getDate() + 7)
+  return toDateOnly(date)
+}

@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  FRONTEND_IMAGE: ghcr.io/baraaabuhalima/jett-exchange-frontend
+  FRONTEND_IMAGE: ghcr.io/baraaabuhalima/manassa-ticket-frontend
 
 jobs:
   test:

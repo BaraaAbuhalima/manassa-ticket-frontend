@@ -15,7 +15,7 @@ export default function TicketCard({ ticket }: { ticket: TicketSummary }) {
           <p className="font-medium text-slate-900">{formatDateTime(ticket.ticketDateTime, language)}</p>
           <p className="text-sm text-slate-500">{t('common.bag', { count: ticket.numberOfBags })}</p>
         </div>
-        <PriceDisplay jod={ticket.totalPriceJod} usd={ticket.totalPriceUsd} language={language} size="md" />
+        <PriceDisplay jod={ticket.amountJod} usd={ticket.amount} language={language} size="md" />
       </Card>
     </Link>
   )

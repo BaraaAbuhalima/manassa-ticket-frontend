@@ -8,6 +8,7 @@ type PluralForms = Partial<Record<Intl.LDMLPluralRule, string>> & {
 
 interface Dictionary {
   nav: {
+    home: string;
     findDate: string;
     browse: string;
     sell: string;
@@ -35,6 +36,7 @@ interface Dictionary {
     backToBrowse: string;
     back: string;
     price: string;
+    priceIncludesFee: string;
     bag: PluralForms;
     registerAlertButton: string;
   };
@@ -49,6 +51,13 @@ interface Dictionary {
       sellDesc: string;
       alertsTitle: string;
       alertsDesc: string;
+    };
+    trust: {
+      heading: string;
+      securePayments: string;
+      verifiedTickets: string;
+      instantDelivery: string;
+      support: string;
     };
   };
   browse: {
@@ -106,17 +115,23 @@ interface Dictionary {
     preparingButton: string;
     continueButton: string;
     processingButton: string;
+    confirmingButton: string;
+    confirmingMessage: string;
     payButton: string;
     paymentSuccess: string;
     paymentFailed: string;
+    paymentLost: string;
+    confirmTimeout: string;
     genericError: string;
     troubleText: string;
     backToBrowseLink: string;
     secureNotice: string;
+    authenticityNotice: string;
   };
   ticketDetail: {
     buyButton: string;
     reviewNote: string;
+    authenticityNote: string;
   };
   notFound: {
     title: string;
@@ -178,6 +193,7 @@ interface Dictionary {
 
 const en: Dictionary = {
   nav: {
+    home: "Home",
     findDate: "Find a Ticket",
     browse: "Browse Tickets",
     sell: "Sell a Ticket",
@@ -187,8 +203,8 @@ const en: Dictionary = {
   },
   footer: {
     tagline:
-      "Jett Ticket Exchange — a marketplace for the resale of travel tickets.",
-    copyright: "© {{year}} Jett Ticket Exchange. All rights reserved.",
+      "Manassa Ticket Exchange — a marketplace for the resale of travel tickets.",
+    copyright: "© {{year}} Manassa Ticket Exchange. All rights reserved.",
   },
   common: {
     loadingTickets: "Loading tickets…",
@@ -209,6 +225,7 @@ const en: Dictionary = {
     backToBrowse: "Return to ticket listings",
     back: "Back",
     price: "Price",
+    priceIncludesFee: "Includes service fee",
     bag: {
       one: "{{count}} bag included",
       other: "{{count}} bags included",
@@ -218,7 +235,7 @@ const en: Dictionary = {
   home: {
     title: "A Trusted Marketplace for Ticket Resale",
     subtitle:
-      "Jett Ticket Exchange enables travellers to resell tickets they are no longer able to use, and assists others in securing tickets for their preferred travel dates.",
+      "Manassa Ticket Exchange enables travellers to resell tickets they are no longer able to use, and assists others in securing tickets for their preferred travel dates.",
     searchButton: "Search Tickets",
     cards: {
       browseTitle: "Browse Tickets",
@@ -230,6 +247,13 @@ const en: Dictionary = {
       alertsTitle: "Ticket Alerts",
       alertsDesc:
         "Register to receive an email notification when a ticket matching your travel date becomes available.",
+    },
+    trust: {
+      heading: "Why travellers choose Manassa",
+      securePayments: "Secure Payments",
+      verifiedTickets: "Verified Tickets",
+      instantDelivery: "Instant Email Delivery",
+      support: "Dedicated Support",
     },
   },
   browse: {
@@ -271,7 +295,7 @@ const en: Dictionary = {
     successMessage:
       "Your ticket has been submitted and is now being verified. Your reference PIN is {{pin}}. Please retain this PIN, as it is required to follow up on the status of your listing. You will receive an email confirmation once verification is complete and your ticket is listed for sale. Once your ticket has been sold, payment will be disbursed within 1 to 3 business days, depending on the payment method selected.",
     notice:
-      "By submitting this form, you confirm that the ticket belongs to you and is valid for use. Payment will be transferred to you through your selected payment method once your ticket has been sold. Funds are typically disbursed within 1 to 3 business days, depending on the payment method selected.",
+      "By submitting this form, you confirm that the ticket belongs to you, is genuine and valid for use, and that you have not sold it and will not sell, transfer, or otherwise make it available to anyone else through any channel outside this platform. Should the ticket prove invalid or be sold elsewhere, you accept full responsibility for any resulting loss or claim. Payment will be transferred to you through your selected payment method once your ticket has been sold. Funds are typically disbursed within 1 to 3 business days, depending on the payment method selected.",
   },
   subscribe: {
     title: "Ticket Availability Alerts",
@@ -295,22 +319,33 @@ const en: Dictionary = {
     preparingButton: "Preparing payment…",
     continueButton: "Continue to Payment",
     processingButton: "Processing payment…",
+    confirmingButton: "Confirming…",
+    confirmingMessage:
+      "Verifying your card and confirming the ticket is still yours — this takes a few seconds.",
     payButton: "Pay {{amount}}",
     paymentSuccess:
       "Your payment has been completed successfully. A confirmation email containing your ticket details has been sent to the email address provided.",
     paymentFailed:
       "The payment could not be completed. Please verify your payment details and try again.",
+    paymentLost:
+      "Someone else completed payment for this ticket moments before you. Your card has not been charged.",
+    confirmTimeout:
+      "We're still confirming your purchase. You have not been double-charged — please check your email shortly, or refresh this page.",
     genericError:
       "The checkout process could not be initiated. Please try again later.",
     troubleText: "Experiencing difficulties?",
     backToBrowseLink: "Return to ticket listings",
     secureNotice:
       "All payments are processed securely by our payment provider. Your card details are not stored on our servers.",
+    authenticityNotice:
+      "Every ticket listed here is a genuine ticket, and our platform prevents the same ticket from being sold more than once. However, we cannot be held responsible if a seller separately sells or transfers the same ticket through another channel outside this platform.",
   },
   ticketDetail: {
     buyButton: "Purchase This Ticket",
     reviewNote:
       "Please review the travel details carefully before proceeding. A confirmation email will be sent to you upon successful payment.",
+    authenticityNote:
+      "Every ticket listed here is a genuine ticket, and our platform prevents the same ticket from being sold more than once. However, we cannot be held responsible if a seller separately sells the same ticket outside this platform.",
   },
   notFound: {
     title: "Page Not Found",
@@ -372,6 +407,7 @@ const en: Dictionary = {
 
 const ar: Dictionary = {
   nav: {
+    home: "الرئيسية",
     findDate: "البحث عن تذكرة",
     browse: "تصفح التذاكر",
     sell: "بيع تذكرة",
@@ -380,8 +416,8 @@ const ar: Dictionary = {
     contact: "تواصل معنا",
   },
   footer: {
-    tagline: "Jett Ticket Exchange — منصة  لإعادة بيع تذاكر السفر.",
-    copyright: "© {{year}} Jett Ticket Exchange. جميع الحقوق محفوظة.",
+    tagline: "Manassa Ticket Exchange — منصة  لإعادة بيع تذاكر السفر.",
+    copyright: "© {{year}} Manassa Ticket Exchange. جميع الحقوق محفوظة.",
   },
   common: {
     loadingTickets: "جارٍ تحميل التذاكر…",
@@ -400,6 +436,7 @@ const ar: Dictionary = {
     backToBrowse: "العودة إلى قائمة التذاكر",
     back: "رجوع",
     price: "السعر",
+    priceIncludesFee: "شامل رسوم الخدمة",
     bag: {
       zero: "بدون حقائب",
       one: "حقيبة واحدة",
@@ -413,7 +450,7 @@ const ar: Dictionary = {
   home: {
     title: "منصة موثوقة لإعادة بيع تذاكر السفر",
     subtitle:
-      "تتيح منصة Jett Ticket Exchange للمسافرين إعادة بيع التذاكر التي لم يعودوا بحاجة إليها، وتساعد الراغبين في الحصول على تذاكر في تواريخ سفرهم المفضلة.",
+      "تتيح منصة Manassa Ticket Exchange للمسافرين إعادة بيع التذاكر التي لم يعودوا بحاجة إليها، وتساعد الراغبين في الحصول على تذاكر في تواريخ سفرهم المفضلة.",
     searchButton: "البحث عن التذاكر",
     cards: {
       browseTitle: "تصفح التذاكر",
@@ -423,6 +460,13 @@ const ar: Dictionary = {
       alertsTitle: "تنبيهات التذاكر",
       alertsDesc:
         "سجّل لتلقّي إشعار عبر البريد الإلكتروني عند توفر تذكرة في تاريخ سفرك.",
+    },
+    trust: {
+      heading: "لماذا يختار المسافرون منصة",
+      securePayments: "مدفوعات آمنة",
+      verifiedTickets: "تذاكر موثّقة",
+      instantDelivery: "تسليم فوري عبر البريد",
+      support: "دعم مخصّص",
     },
   },
   browse: {
@@ -463,7 +507,7 @@ const ar: Dictionary = {
     successMessage:
       "تم تقديم تذكرتك وهي الآن قيد التحقق. الرمز المرجعي الخاص بك هو {{pin}}. يرجى الاحتفاظ بهذا الرمز، إذ يلزم لمتابعة حالة تذكرتك. ستصلك رسالة تأكيد عبر البريد الإلكتروني فور اكتمال التحقق وعرض تذكرتك للبيع. بعد إتمام بيع التذكرة، سيتم تحويل المبلغ إليك خلال مدة تتراوح بين يوم عمل واحد وثلاثة أيام عمل، وذلك حسب طريقة الدفع المختارة.",
     notice:
-      "بتقديم هذا النموذج، فإنك تقرّ بأن التذكرة تعود ملكيتها لك وأنها صالحة للاستخدام. سيتم تحويل المبلغ إليك عبر طريقة الدفع المحددة بعد إتمام بيع التذكرة. تُصرف المبالغ عادةً خلال مدة تتراوح بين يوم عمل واحد وثلاثة أيام عمل، وذلك حسب طريقة الدفع المختارة.",
+      "بتقديم هذا النموذج، فإنك تقرّ بأن التذكرة تعود ملكيتها لك وأنها أصلية وصالحة للاستخدام، وبأنك لم تقم ببيعها ولن تقوم ببيعها أو تحويلها أو إتاحتها لأي شخص آخر عبر أي وسيلة خارج هذه المنصة. وفي حال ثبت أن التذكرة غير صالحة أو تم بيعها في مكان آخر، فإنك تتحمّل كامل المسؤولية عن أي خسارة أو مطالبة تنشأ عن ذلك. سيتم تحويل المبلغ إليك عبر طريقة الدفع المحددة بعد إتمام بيع التذكرة. تُصرف المبالغ عادةً خلال مدة تتراوح بين يوم عمل واحد وثلاثة أيام عمل، وذلك حسب طريقة الدفع المختارة.",
   },
   subscribe: {
     title: "تنبيهات توفر التذاكر",
@@ -485,21 +529,32 @@ const ar: Dictionary = {
     preparingButton: "جارٍ تجهيز عملية الدفع…",
     continueButton: "المتابعة إلى الدفع",
     processingButton: "جارٍ معالجة الدفع…",
+    confirmingButton: "جارٍ التأكيد…",
+    confirmingMessage:
+      "يتم التحقق من بطاقتك وتأكيد أن التذكرة ما زالت لك — قد يستغرق ذلك بضع ثوانٍ.",
     payButton: "دفع {{amount}}",
     paymentSuccess:
       "تمت عملية الدفع بنجاح. سيتم إرسال رسالة تأكيد تتضمن تفاصيل التذكرة إلى بريدك الإلكتروني.",
     paymentFailed:
       "تعذّر إتمام عملية الدفع. يرجى التحقق من بيانات الدفع والمحاولة مرة أخرى.",
+    paymentLost:
+      "أتم شخص آخر عملية الدفع لهذه التذكرة قبل لحظات منك. لم يتم خصم أي مبلغ من بطاقتك.",
+    confirmTimeout:
+      "ما زلنا نؤكد عملية الشراء. لم يتم خصم المبلغ مرتين — يرجى التحقق من بريدك الإلكتروني بعد قليل أو تحديث هذه الصفحة.",
     genericError: "تعذّر بدء عملية الدفع. يرجى المحاولة مرة أخرى لاحقًا.",
     troubleText: "هل تواجه مشكلة؟",
     backToBrowseLink: "العودة إلى قائمة التذاكر",
     secureNotice:
       "تتم معالجة جميع المدفوعات بصورة آمنة عبر مزوّد خدمات الدفع، ولا يتم تخزين بيانات بطاقتك على خوادمنا.",
+    authenticityNotice:
+      "جميع التذاكر المعروضة هنا تذاكر أصلية، وتمنع منصتنا بيع التذكرة نفسها أكثر من مرة. غير أننا لا نتحمّل المسؤولية إذا قام البائع ببيع التذكرة نفسها أو تحويلها بصورة منفصلة عبر أي وسيلة أخرى خارج هذه المنصة.",
   },
   ticketDetail: {
     buyButton: "شراء هذه التذكرة",
     reviewNote:
       "يرجى مراجعة تفاصيل الرحلة بعناية قبل إتمام عملية الشراء. سيتم إرسال رسالة تأكيد إلى بريدك الإلكتروني بعد إتمام الدفع.",
+    authenticityNote:
+      "جميع التذاكر المعروضة هنا تذاكر أصلية، وتمنع منصتنا بيع التذكرة نفسها أكثر من مرة. غير أننا لا نتحمّل المسؤولية إذا قام البائع ببيع التذكرة نفسها بصورة منفصلة خارج هذه المنصة.",
   },
   notFound: {
     title: "الصفحة غير موجودة",

@@ -37,9 +37,14 @@ export interface TicketSummary {
   numberOfBags: number
   totalPriceJod: number
   totalPriceUsd: number
+  fee: number
+  // totalPriceUsd + fee — the actual amount a buyer pays at checkout, not just the listed price.
+  amount: number
+  amountJod: number
 }
 
-export interface TicketWithStatus extends Omit<TicketSummary, 'ticketDateTime' | 'numberOfBags'> {
+export interface TicketWithStatus
+  extends Omit<TicketSummary, 'ticketDateTime' | 'numberOfBags' | 'fee' | 'amount' | 'amountJod'> {
   // Not yet extracted while the ticket is Processing (or when it was Rejected).
   ticketDateTime?: string | null
   numberOfBags?: number | null
@@ -67,6 +72,9 @@ export interface PurchaseTicketResponse {
   ticketId: string
   clientSecret: string
   publishableKey: string
+  ticketPrice: number
+  fee: number
+  // ticketPrice + fee — the actual amount charged, not just the listed ticket price.
   amount: number
   currency: string
 }
