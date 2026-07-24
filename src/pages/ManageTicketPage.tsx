@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { getTicketByPin, deleteTicket, republishTicket, modifyTicket } from '../api/tickets'
+import { getTicketByPin, deleteTicket, republishTicket, modifyTicket, getTicketFileUrl } from '../api/tickets'
 import { ApiError } from '../api/client'
 import type { PaymentMethod, TicketWithStatus } from '../types/api'
 import { Alert, Button, Card, Field, Input, Select } from '../components/ui'
@@ -26,9 +26,13 @@ export default function ManageTicketPage() {
   const { t, language } = useLanguage()
   const [searchParams] = useSearchParams()
   const [pin, setPin] = useState(searchParams.get('pin') ?? '')
+  const [email, setEmail] = useState(searchParams.get('email') ?? '')
 
   const [ticket, setTicket] = useState<TicketWithStatus | null>(null)
   const [deleteToken, setDeleteToken] = useState<string | null>(null)
+  // Rejection reason travels in the response's top-level `message`, not on the ticket data
+  // itself — the backend doesn't return a rejectionReason field.
+  const [rejectionReason, setRejectionReason] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [lookupError, setLookupError] = useState<string | null>(null)
 
@@ -38,6 +42,9 @@ export default function ManageTicketPage() {
 
   const [republishing, setRepublishing] = useState(false)
   const [republishError, setRepublishError] = useState<string | null>(null)
+
+  const [downloading, setDownloading] = useState(false)
+  const [downloadError, setDownloadError] = useState<string | null>(null)
 
   const [modifyOpen, setModifyOpen] = useState(false)
   const [savingModify, setSavingModify] = useState(false)
@@ -58,6 +65,7 @@ export default function ManageTicketPage() {
     setLookupError(null)
     setTicket(null)
     setDeleteToken(null)
+    setRejectionReason(null)
     setActionSuccessMessage(null)
     setConfirmingDelete(false)
     setDeleteError(null)
@@ -65,10 +73,11 @@ export default function ManageTicketPage() {
     setModifyOpen(false)
     setModifyError(null)
     try {
-      const res = await getTicketByPin(pin.trim())
+      const res = await getTicketByPin(pin.trim(), email.trim())
       if (!res.data) throw new Error('No ticket data returned')
       setTicket(res.data)
       setDeleteToken(res.deleteToken)
+      setRejectionReason(res.data.status === 'Rejected' ? (res.message ?? null) : null)
     } catch (err) {
       setLookupError(err instanceof ApiError ? (err.errors[0] ?? err.message) : t('manageTicket.lookupError'))
     } finally {
@@ -115,9 +124,28 @@ export default function ManageTicketPage() {
     }
   }
 
+  async function handleDownloadFile() {
+    if (!deleteToken) {
+      setDownloadError(t('manageTicket.downloadError'))
+      return
+    }
+    setDownloading(true)
+    setDownloadError(null)
+    try {
+      const res = await getTicketFileUrl(deleteToken)
+      if (!res.data) throw new Error('No download URL returned')
+      // Presigned and short-lived (15 min) — open immediately rather than storing it.
+      window.open(res.data.downloadUrl, '_blank', 'noopener,noreferrer')
+    } catch (err) {
+      setDownloadError(err instanceof ApiError ? (err.errors[0] ?? err.message) : t('manageTicket.downloadError'))
+    } finally {
+      setDownloading(false)
+    }
+  }
+
   function openModify() {
     if (!ticket) return
-    setPrice(String(ticket.totalPriceJod))
+    setPrice(String(ticket.sellerAskedPriceJod))
     setModifyPaymentMethod(ticket.paymentMethod)
     if (ticket.paymentInfo.type === 'bankTransfer') {
       setAccountNumber(ticket.paymentInfo.bankDetails.accountNumber)
@@ -155,10 +183,11 @@ export default function ManageTicketPage() {
               : { phoneNumber: transferPhoneNumber },
         },
       })
-      const res = await getTicketByPin(pin.trim())
+      const res = await getTicketByPin(pin.trim(), email.trim())
       if (res.data) {
         setTicket(res.data)
         setDeleteToken(res.deleteToken)
+        setRejectionReason(res.data.status === 'Rejected' ? (res.message ?? null) : null)
       }
       setActionSuccessMessage(t('manageTicket.modifySuccessMessage'))
       setModifyOpen(false)
@@ -176,6 +205,15 @@ export default function ManageTicketPage() {
 
       <Card className="mt-6">
         <form onSubmit={handleLookup} className="flex flex-col gap-4">
+          <Field label={t('manageTicket.emailLabel')}>
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              maxLength={254}
+            />
+          </Field>
           <Field label={t('manageTicket.pinLabel')}>
             <Input value={pin} onChange={(e) => setPin(e.target.value)} required maxLength={20} />
           </Field>
@@ -210,7 +248,9 @@ export default function ManageTicketPage() {
 
           <div className="mt-6 flex items-center justify-between border-t border-slate-200 pt-4">
             <span className="text-sm text-slate-500">{t('common.price')}</span>
-            <PriceDisplay jod={ticket.totalPriceJod} usd={ticket.totalPriceUsd} language={language} />
+            {/* This is the seller's own asking price (no buyer service fee), so there's no
+                fee-inclusive USD figure to show alongside it here. */}
+            <PriceDisplay jod={ticket.sellerAskedPriceJod} language={language} />
           </div>
 
           <div className="mt-4 border-t border-slate-200 pt-4">
@@ -231,6 +271,13 @@ export default function ManageTicketPage() {
             </dl>
           </div>
 
+          <div className="mt-4 flex flex-col gap-2">
+            <Button variant="secondary" disabled={!deleteToken || downloading} onClick={handleDownloadFile}>
+              {downloading ? t('manageTicket.downloadingButton') : t('manageTicket.downloadButton')}
+            </Button>
+            {downloadError && <Alert>{downloadError}</Alert>}
+          </div>
+
           {ticket.status === 'Processing' && (
             <p className="mt-4 text-xs leading-relaxed text-slate-500">{t('manageTicket.processingNotice')}</p>
           )}
@@ -239,10 +286,10 @@ export default function ManageTicketPage() {
             <div className="mt-4 flex flex-col gap-3">
               <Alert>
                 {t('manageTicket.rejectedNotice')}
-                {ticket.rejectionReason && (
+                {rejectionReason && (
                   <>
                     {' '}
-                    {t('manageTicket.rejectionReasonLabel')}: {ticket.rejectionReason}
+                    {t('manageTicket.rejectionReasonLabel')}: {rejectionReason}
                   </>
                 )}
               </Alert>
@@ -361,7 +408,7 @@ export default function ManageTicketPage() {
                     value={transferPhoneNumber}
                     onChange={(e) => setTransferPhoneNumber(e.target.value)}
                     required
-                    maxLength={20}
+                    maxLength={30}
                   />
                 </Field>
               )}

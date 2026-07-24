@@ -1,8 +1,9 @@
-import { ApiError, apiDelete, apiGet, apiGetWithHeaders, apiPatchAuth, apiPostAuth, apiPostJson } from './client'
+import { ApiError, apiDelete, apiGet, apiGetAuth, apiGetWithHeaders, apiPatchAuth, apiPostAuth, apiPostJson } from './client'
 import type {
   CreateUploadUrlResponse,
   PostTicketFormValues,
   PostTicketResponse,
+  TicketFileUrlResponse,
   TicketSummary,
   TicketWithStatus,
   UpdateTicketRequest,
@@ -12,8 +13,10 @@ export function getTicketById(id: string) {
   return apiGet<TicketSummary>(`/api/ticket/${id}`)
 }
 
-export async function getTicketByPin(pin: string) {
-  const { body, headers } = await apiGetWithHeaders<TicketWithStatus>(`/api/ticket/by-pin/${pin}`)
+// The backend matches on pin AND seller email (case-insensitive) — omitting email isn't just
+// looser, it never matches any real ticket, since SellerEmail is never empty.
+export async function getTicketByPin(pin: string, email: string) {
+  const { body, headers } = await apiGetWithHeaders<TicketWithStatus>(`/api/ticket/by-pin/${pin}`, { email })
   return { ...body, deleteToken: headers.get('X-Delete-Token') }
 }
 
@@ -35,6 +38,12 @@ export function republishTicket(deleteToken: string) {
 
 export function modifyTicket(deleteToken: string, request: UpdateTicketRequest) {
   return apiPatchAuth<null>('/api/ticket', deleteToken, request)
+}
+
+// The download URL is presigned and short-lived (15 minutes on the backend) — callers
+// should fetch it right before using it, not cache it.
+export function getTicketFileUrl(deleteToken: string) {
+  return apiGetAuth<TicketFileUrlResponse>('/api/ticket/file-url', deleteToken)
 }
 
 // Posting is a three-step flow: get a presigned upload URL from the API, PUT the

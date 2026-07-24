@@ -149,7 +149,7 @@ export default function SellPage() {
           </>
         ) : (
           <Field label={paymentMethod === 'Reflect' ? t('sell.reflectPhoneLabel') : t('sell.phoneTransferLabel')}>
-            <Input value={transferPhoneNumber} onChange={(e) => setTransferPhoneNumber(e.target.value)} required maxLength={20} />
+            <Input value={transferPhoneNumber} onChange={(e) => setTransferPhoneNumber(e.target.value)} required maxLength={30} />
           </Field>
         )}
 

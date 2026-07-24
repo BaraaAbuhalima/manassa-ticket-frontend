@@ -12,6 +12,7 @@ import SellPage from './pages/SellPage'
 import SubscribePage from './pages/SubscribePage'
 import ManageTicketPage from './pages/ManageTicketPage'
 import ContactPage from './pages/ContactPage'
+import PolicyPage from './pages/PolicyPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 // Keeps the active language and a ?lang=en / ?lang=ar query parameter in sync,
@@ -60,6 +61,7 @@ export default function App() {
           <Route path="subscribe" element={<SubscribePage />} />
           <Route path="manage-ticket" element={<ManageTicketPage />} />
           <Route path="contact" element={<ContactPage />} />
+          <Route path="policy" element={<PolicyPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

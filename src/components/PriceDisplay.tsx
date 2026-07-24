@@ -9,7 +9,9 @@ export function PriceDisplay({
   align = 'right',
 }: {
   jod: number
-  usd: number
+  // Omit when there's no USD equivalent to show (e.g. the seller's raw asking price on the
+  // manage-ticket page, which has no fee-inclusive USD total from the backend).
+  usd?: number
   language: Language
   size?: 'md' | 'lg'
   align?: 'left' | 'right'
@@ -18,7 +20,7 @@ export function PriceDisplay({
   return (
     <div className={align === 'right' ? 'text-right' : 'text-left'}>
       <p className={`${primarySize} font-semibold text-slate-900`}>{formatCurrency(jod, language, 'JOD')}</p>
-      <p className="text-xs text-slate-500">{formatCurrency(usd, language, 'USD')}</p>
+      {usd !== undefined && <p className="text-xs text-slate-500">{formatCurrency(usd, language, 'USD')}</p>}
     </div>
   )
 }

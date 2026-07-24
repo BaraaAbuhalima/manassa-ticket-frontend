@@ -35,21 +35,21 @@ export interface TicketSummary {
   id: string
   ticketDateTime: string
   numberOfBags: number
+  // Already fee-inclusive — this is the actual amount a buyer pays at checkout, not just the
+  // seller's listed price. The backend folds the buyer service fee into these totals itself
+  // (see FeeCalculator / TicketReader.ToResponse), so there is no separate fee/amount field.
   totalPriceJod: number
   totalPriceUsd: number
-  fee: number
-  // totalPriceUsd + fee — the actual amount a buyer pays at checkout, not just the listed price.
-  amount: number
-  amountJod: number
 }
 
-export interface TicketWithStatus
-  extends Omit<TicketSummary, 'ticketDateTime' | 'numberOfBags' | 'fee' | 'amount' | 'amountJod'> {
+// GET /api/ticket/by-pin returns the seller's own listing, so price here is the seller's raw
+// asking price (no buyer service fee applied) — there is no USD equivalent for it.
+export interface TicketWithStatus extends Omit<TicketSummary, 'ticketDateTime' | 'numberOfBags' | 'totalPriceJod' | 'totalPriceUsd'> {
   // Not yet extracted while the ticket is Processing (or when it was Rejected).
   ticketDateTime?: string | null
   numberOfBags?: number | null
+  sellerAskedPriceJod: number
   status: TicketSellStatus
-  rejectionReason?: string | null
   soldAt?: string | null
   sellerEmail: string
   sellerPhone: string
@@ -62,6 +62,10 @@ export interface CreateUploadUrlResponse {
   uploadUrl: string
 }
 
+export interface TicketFileUrlResponse {
+  downloadUrl: string
+}
+
 export interface PostTicketResponse {
   ticketId: string
   refPin: string
@@ -72,9 +76,8 @@ export interface PurchaseTicketResponse {
   ticketId: string
   clientSecret: string
   publishableKey: string
-  ticketPrice: number
-  fee: number
-  // ticketPrice + fee — the actual amount charged, not just the listed ticket price.
+  // Already fee-inclusive — the actual amount charged, not just the listed ticket price. The
+  // backend doesn't break this down into ticketPrice/fee in the response.
   amount: number
   currency: string
 }

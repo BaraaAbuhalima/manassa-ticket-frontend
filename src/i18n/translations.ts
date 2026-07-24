@@ -15,6 +15,7 @@ interface Dictionary {
     subscribe: string;
     manageTicket: string;
     contact: string;
+    policy: string;
   };
   footer: {
     tagline: string;
@@ -34,6 +35,7 @@ interface Dictionary {
     failedToLoadTicket: string;
     ticketNotFound: string;
     backToBrowse: string;
+    backToHome: string;
     back: string;
     price: string;
     priceIncludesFee: string;
@@ -58,6 +60,20 @@ interface Dictionary {
       verifiedTickets: string;
       instantDelivery: string;
       support: string;
+    };
+    policy: {
+      heading: string;
+      subtitle: string;
+      verificationTitle: string;
+      verificationDesc: string;
+      noScalpingTitle: string;
+      noScalpingDesc: string;
+      purposeTitle: string;
+      purposeDesc: string;
+      priceLimitTitle: string;
+      priceLimitDesc: string;
+      serviceFeeTitle: string;
+      serviceFeeDesc: string;
     };
   };
   browse: {
@@ -153,6 +169,7 @@ interface Dictionary {
     title: string;
     subtitle: string;
     pinLabel: string;
+    emailLabel: string;
     lookupButton: string;
     lookingUpButton: string;
     lookupError: string;
@@ -171,6 +188,9 @@ interface Dictionary {
     sellerEmailLabel: string;
     sellerPhoneLabel: string;
     currentPaymentMethodLabel: string;
+    downloadButton: string;
+    downloadingButton: string;
+    downloadError: string;
     deleteButton: string;
     deleteConfirmMessage: string;
     confirmDeleteButton: string;
@@ -200,6 +220,7 @@ const en: Dictionary = {
     subscribe: "Ticket Alerts",
     manageTicket: "Manage My Ticket",
     contact: "Contact Us",
+    policy: "Our Policy",
   },
   footer: {
     tagline:
@@ -223,6 +244,7 @@ const en: Dictionary = {
       "The ticket could not be loaded. Please try again later.",
     ticketNotFound: "The requested ticket could not be found.",
     backToBrowse: "Return to ticket listings",
+    backToHome: "Back to home",
     back: "Back",
     price: "Price",
     priceIncludesFee: "Includes service fee",
@@ -235,7 +257,7 @@ const en: Dictionary = {
   home: {
     title: "A Trusted Marketplace for Ticket Resale",
     subtitle:
-      "Manassa Ticket Exchange enables travellers to resell tickets they are no longer able to use, and assists others in securing tickets for their preferred travel dates.",
+      "Manassa Ticket Exchange connects travellers who no longer need their ticket with those looking for one on their preferred travel date — safely, simply, and without the hassle.",
     searchButton: "Search Tickets",
     cards: {
       browseTitle: "Browse Tickets",
@@ -254,6 +276,22 @@ const en: Dictionary = {
       verifiedTickets: "Verified Tickets",
       instantDelivery: "Instant Email Delivery",
       support: "Dedicated Support",
+    },
+    policy: {
+      heading: "Our Policy",
+      subtitle: "A few things worth knowing before you buy or sell.",
+      verificationTitle: "Verified, Single-Use Tickets",
+      verificationDesc:
+        "Every ticket listed is checked for authenticity, and our system blocks it from being sold twice on the platform. We can't, however, guarantee that a seller hasn't also resold the same ticket outside Manassa Ticket Exchange.",
+      noScalpingTitle: "No Scalping or Brokering",
+      noScalpingDesc: "We don't allow ticket scalping or brokering on the platform.",
+      purposeTitle: "Built to Help, Not to Profit",
+      purposeDesc:
+        "This platform exists purely to connect people who need a ticket with people who no longer need theirs.",
+      priceLimitTitle: "Limited Price Increase",
+      priceLimitDesc: "A ticket's asking price cannot be raised more than 1 JOD above its original purchase price.",
+      serviceFeeTitle: "A Small Service Fee Applies",
+      serviceFeeDesc: "A nominal fee applies to the ticket sale process on the platform.",
     },
   },
   browse: {
@@ -365,11 +403,12 @@ const en: Dictionary = {
   },
   manageTicket: {
     title: "Manage My Ticket",
-    subtitle: "Enter your reference PIN to view your ticket and seller details, remove it from sale, republish it, or modify the price and payment details.",
+    subtitle: "Enter your reference PIN and the seller email used to list it to view your ticket and seller details, remove it from sale, republish it, or modify the price and payment details.",
     pinLabel: "Reference PIN",
+    emailLabel: "Seller email",
     lookupButton: "Look Up Ticket",
     lookingUpButton: "Looking Up…",
-    lookupError: "No ticket could be found for the PIN provided. Please verify the PIN and try again.",
+    lookupError: "No ticket could be found for the PIN and email provided. Please verify them and try again.",
     statusForSale: "Listed for Sale",
     statusSold: "Sold",
     statusDeleted: "Removed from Sale",
@@ -385,6 +424,9 @@ const en: Dictionary = {
     sellerEmailLabel: "Seller email",
     sellerPhoneLabel: "Seller phone",
     currentPaymentMethodLabel: "Payment method",
+    downloadButton: "Download Ticket PDF",
+    downloadingButton: "Preparing Download…",
+    downloadError: "Your ticket file could not be downloaded. Please try again later.",
     deleteButton: "Remove Ticket from Sale",
     deleteConfirmMessage: "Are you sure you wish to remove this ticket from sale? This action cannot be undone.",
     confirmDeleteButton: "Yes, Remove It",
@@ -414,6 +456,7 @@ const ar: Dictionary = {
     subscribe: "تنبيهات التذاكر",
     manageTicket: "إدارة تذكرتي",
     contact: "تواصل معنا",
+    policy: "سياستنا",
   },
   footer: {
     tagline: "Manassa Ticket Exchange — منصة  لإعادة بيع تذاكر السفر.",
@@ -434,6 +477,7 @@ const ar: Dictionary = {
     failedToLoadTicket: "تعذّر تحميل التذكرة. يرجى المحاولة مرة أخرى لاحقًا.",
     ticketNotFound: "التذكرة المطلوبة غير موجودة.",
     backToBrowse: "العودة إلى قائمة التذاكر",
+    backToHome: "العودة إلى الصفحة الرئيسية",
     back: "رجوع",
     price: "السعر",
     priceIncludesFee: "شامل رسوم الخدمة",
@@ -448,9 +492,9 @@ const ar: Dictionary = {
     registerAlertButton: "التسجيل لتلقّي تنبيه",
   },
   home: {
-    title: "منصة موثوقة لإعادة بيع تذاكر السفر",
+    title: "منصة موثوقة لإعادة بيع تذاكر السفر (المنصة)",
     subtitle:
-      "تتيح منصة Manassa Ticket Exchange للمسافرين إعادة بيع التذاكر التي لم يعودوا بحاجة إليها، وتساعد الراغبين في الحصول على تذاكر في تواريخ سفرهم المفضلة.",
+      "تجمع منصة Manassa Ticket Exchange بين المسافرين الذين لم يعودوا بحاجة إلى تذاكرهم ومن يبحثون عن تذكرة في تاريخ سفرهم المفضّل، بطريقة آمنة وسهلة وخالية من التعقيد.",
     searchButton: "البحث عن التذاكر",
     cards: {
       browseTitle: "تصفح التذاكر",
@@ -467,6 +511,21 @@ const ar: Dictionary = {
       verifiedTickets: "تذاكر موثّقة",
       instantDelivery: "تسليم فوري عبر البريد",
       support: "دعم مخصّص",
+    },
+    policy: {
+      heading: "سياستنا",
+      subtitle: "بعض الأمور التي يجدر معرفتها قبل الشراء أو البيع.",
+      verificationTitle: "تذاكر موثّقة تُباع مرة واحدة",
+      verificationDesc:
+        "يتم التحقق من صحة كل تذكرة معروضة، ويمنع نظامنا بيعها أكثر من مرة عبر المنصة. ومع ذلك، لا يمكننا ضمان عدم قيام البائع ببيعها في مكان آخر خارج منصة Manassa Ticket Exchange.",
+      noScalpingTitle: "لا سمسرة ولا تجارة بالتذاكر",
+      noScalpingDesc: "لا نسمح بسمسرة التذاكر عبر المنصة.",
+      purposeTitle: "مصممة للمساعدة، لا للربح",
+      purposeDesc: "هذه المنصة موجودة فقط لربط من يحتاج إلى تذكرة بمن لم يعد بحاجة إليها.",
+      priceLimitTitle: "حد أقصى لزيادة السعر",
+      priceLimitDesc: "لا يمكن زيادة سعر التذكرة عن سعرها الأصلي بأكثر من دينار أردني واحد.",
+      serviceFeeTitle: "رسوم رمزية على البيع",
+      serviceFeeDesc: "يوجد رسوم رمزية لعملية بيع التذاكر عبر المنصة.",
     },
   },
   browse: {
@@ -574,11 +633,12 @@ const ar: Dictionary = {
   },
   manageTicket: {
     title: "إدارة تذكرتي",
-    subtitle: "يرجى إدخال الرمز المرجعي للاطلاع على تفاصيل تذكرتك وبيانات البائع، أو إزالتها من العرض، أو إعادة نشرها، أو تعديل السعر وبيانات الدفع.",
+    subtitle: "يرجى إدخال الرمز المرجعي والبريد الإلكتروني للبائع المستخدم عند عرض التذكرة للاطلاع على تفاصيل تذكرتك وبيانات البائع، أو إزالتها من العرض، أو إعادة نشرها، أو تعديل السعر وبيانات الدفع.",
     pinLabel: "الرمز المرجعي",
+    emailLabel: "البريد الإلكتروني للبائع",
     lookupButton: "البحث عن التذكرة",
     lookingUpButton: "جارٍ البحث…",
-    lookupError: "تعذّر العثور على تذكرة بهذا الرمز. يرجى التحقق من الرمز والمحاولة مرة أخرى.",
+    lookupError: "تعذّر العثور على تذكرة بهذا الرمز والبريد الإلكتروني. يرجى التحقق منهما والمحاولة مرة أخرى.",
     statusForSale: "معروضة للبيع",
     statusSold: "تم بيعها",
     statusDeleted: "تمت إزالتها من العرض",
@@ -594,6 +654,9 @@ const ar: Dictionary = {
     sellerEmailLabel: "البريد الإلكتروني للبائع",
     sellerPhoneLabel: "رقم هاتف البائع",
     currentPaymentMethodLabel: "طريقة الدفع",
+    downloadButton: "تحميل ملف التذكرة",
+    downloadingButton: "جارٍ تجهيز التحميل…",
+    downloadError: "تعذّر تحميل ملف تذكرتك. يرجى المحاولة مرة أخرى لاحقًا.",
     deleteButton: "إزالة التذكرة من العرض",
     deleteConfirmMessage: "هل أنت متأكد من رغبتك في إزالة هذه التذكرة من العرض؟ لا يمكن التراجع عن هذا الإجراء.",
     confirmDeleteButton: "نعم، قم بالإزالة",

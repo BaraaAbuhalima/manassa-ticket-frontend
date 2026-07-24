@@ -49,6 +49,10 @@ export default function Layout() {
     { to: '/contact', label: t('nav.contact') },
   ]
 
+  // Policy is deliberately left out of the header nav (it's not a primary action) but still
+  // needs to be reachable, so it's appended only to the footer link list.
+  const footerNavItems = [...navItems, { to: '/policy', label: t('nav.policy'), end: false }]
+
   return (
     <div className="flex min-h-screen flex-col bg-slate-50">
       <header className="border-b border-slate-200 bg-white">
@@ -117,7 +121,7 @@ export default function Layout() {
           </div>
 
           <nav className="flex flex-col gap-2 text-start">
-            {navItems.map((item) => (
+            {footerNavItems.map((item) => (
               <Link key={item.to} to={item.to} className="text-sm text-slate-500 transition-colors hover:text-slate-900">
                 {item.label}
               </Link>

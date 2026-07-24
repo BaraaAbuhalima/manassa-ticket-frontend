@@ -51,7 +51,7 @@ export default function TicketDetailPage() {
 
         <div className="mt-6 flex items-center justify-between border-t border-slate-200 pt-4">
           <span className="text-sm text-slate-500">{t('common.price')}</span>
-          <PriceDisplay jod={ticket.amountJod} usd={ticket.amount} language={language} />
+          <PriceDisplay jod={ticket.totalPriceJod} usd={ticket.totalPriceUsd} language={language} />
         </div>
         <p className="mt-1 text-right text-xs text-slate-400">{t('common.priceIncludesFee')}</p>
 

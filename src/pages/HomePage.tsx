@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Card, Input } from '../components/ui'
+import PolicySection from '../components/PolicySection'
 import { defaultTravelDate, toDateOnly } from '../lib/format'
 import { useLanguage } from '../i18n/LanguageContext'
 
@@ -124,6 +125,10 @@ export default function HomePage() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="border-t border-slate-200 pt-10">
+        <PolicySection />
       </section>
     </div>
   )
