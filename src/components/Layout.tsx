@@ -118,6 +118,20 @@ export default function Layout() {
               Manassa Ticket Exchange
             </p>
             <p className="mt-2 max-w-xs text-sm text-slate-500">{t('footer.tagline')}</p>
+            <a
+              href="mailto:support@manassticket.com"
+              className="mt-3 inline-flex items-center gap-1.5 text-sm text-slate-500 transition-colors hover:text-slate-900"
+            >
+              <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M2.25 6.75c0-.621.504-1.125 1.125-1.125h17.25c.621 0 1.125.504 1.125 1.125v10.5c0 .621-.504 1.125-1.125 1.125H3.375a1.125 1.125 0 0 1-1.125-1.125V6.75Z"
+                />
+                <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 7 8.25 6 8.25-6" />
+              </svg>
+              support@manassticket.com
+            </a>
           </div>
 
           <nav className="flex flex-col gap-2 text-start">

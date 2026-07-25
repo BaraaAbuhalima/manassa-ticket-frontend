@@ -164,6 +164,7 @@ interface Dictionary {
     sendButton: string;
     successMessage: string;
     genericError: string;
+    directEmailLabel: string;
   };
   manageTicket: {
     title: string;
@@ -400,6 +401,7 @@ const en: Dictionary = {
     sendButton: "Send Message",
     successMessage: "Your message has been received. Our team will respond to your inquiry as soon as possible.",
     genericError: "Your message could not be sent. Please try again later.",
+    directEmailLabel: "Or email us directly at",
   },
   manageTicket: {
     title: "Manage My Ticket",
@@ -630,6 +632,7 @@ const ar: Dictionary = {
     sendButton: "إرسال الرسالة",
     successMessage: "تم استلام رسالتك بنجاح. سيقوم فريقنا بالرد على استفسارك في أقرب وقت ممكن.",
     genericError: "تعذّر إرسال رسالتك. يرجى المحاولة مرة أخرى لاحقًا.",
+    directEmailLabel: "أو راسلنا مباشرة عبر البريد الإلكتروني:",
   },
   manageTicket: {
     title: "إدارة تذكرتي",
