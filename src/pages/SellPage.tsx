@@ -79,15 +79,6 @@ export default function SellPage() {
       <p className="mt-1 text-sm text-slate-600">{t('sell.subtitle')}</p>
 
       <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
-        <Field label={t('sell.fileLabel')}>
-          <Input
-            type="file"
-            accept="application/pdf"
-            onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-            required
-          />
-        </Field>
-
         <Field label={t('sell.nameLabel')}>
           <Input value={sellerName} onChange={(e) => setSellerName(e.target.value)} required maxLength={100} />
         </Field>
@@ -104,6 +95,15 @@ export default function SellPage() {
 
         <Field label={t('sell.phoneLabel')}>
           <Input value={sellerPhone} onChange={(e) => setSellerPhone(e.target.value)} required maxLength={30} />
+        </Field>
+
+        <Field label={t('sell.fileLabel')}>
+          <Input
+            type="file"
+            accept="application/pdf"
+            onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            required
+          />
         </Field>
 
         <Field label={t('sell.priceLabel')}>
