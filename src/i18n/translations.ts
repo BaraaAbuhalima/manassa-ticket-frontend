@@ -63,8 +63,6 @@ interface Dictionary {
       noScalpingDesc: string;
       purposeTitle: string;
       purposeDesc: string;
-      priceLimitTitle: string;
-      priceLimitDesc: string;
       serviceFeeTitle: string;
       serviceFeeDesc: string;
     };
@@ -272,12 +270,11 @@ const en: Dictionary = {
       verificationDesc:
         "Every ticket listed is checked for authenticity, and our system blocks it from being sold twice on the platform. We can't, however, guarantee that a seller hasn't also resold the same ticket outside Manassa Ticket Exchange.",
       noScalpingTitle: "No Scalping or Brokering",
-      noScalpingDesc: "We don't allow ticket scalping or brokering on the platform.",
+      noScalpingDesc:
+        "We don't allow ticket scalping or brokering on the platform, and a ticket's asking price cannot be raised above its original purchase price.",
       purposeTitle: "Built to Help, Not to Profit",
       purposeDesc:
         "This platform exists purely to connect people who need a ticket with people who no longer need theirs.",
-      priceLimitTitle: "Limited Price Increase",
-      priceLimitDesc: "A ticket's asking price cannot be raised more than 1 JOD above its original purchase price.",
       serviceFeeTitle: "A Small Service Fee Applies",
       serviceFeeDesc: "A nominal fee applies to the ticket sale process on the platform.",
     },
@@ -303,7 +300,7 @@ const en: Dictionary = {
     emailLabel: "Email address",
     phoneLabel: "Phone number",
     priceLabel: "Asking price (JOD)",
-    priceLimitNote: "Your asking price cannot exceed the ticket's original purchase price by more than 1 JOD.",
+    priceLimitNote: "Your asking price cannot exceed the ticket's original purchase price.",
     paymentMethodLabel: "Preferred payment method",
     paymentOptions: {
       iban: "Bank transfer (IBAN)",
@@ -433,7 +430,7 @@ const en: Dictionary = {
     saveButton: "Save Changes",
     modifySuccessMessage: "Your payment details have been updated.",
     modifyError: "Your payment details could not be updated. Please try again later.",
-    priceLimitNote: "You can raise the price by at most 1 JOD above the ticket's original purchase price.",
+    priceLimitNote: "Your asking price cannot exceed the ticket's original purchase price.",
   },
 };
 
@@ -502,11 +499,9 @@ const ar: Dictionary = {
       verificationDesc:
         "يتم التحقق من صحة كل تذكرة معروضة، ويمنع نظامنا بيعها أكثر من مرة عبر المنصة. ومع ذلك، لا يمكننا ضمان عدم قيام البائع ببيعها في مكان آخر خارج منصة Manassa Ticket Exchange.",
       noScalpingTitle: "لا سمسرة ولا تجارة بالتذاكر",
-      noScalpingDesc: "لا نسمح بسمسرة التذاكر عبر المنصة.",
+      noScalpingDesc: "لا نسمح بسمسرة التذاكر عبر المنصة، ولا يمكن زيادة سعر التذكرة عن سعرها الأصلي.",
       purposeTitle: "مصممة للمساعدة، لا للربح",
       purposeDesc: "هذه المنصة موجودة فقط لربط من يحتاج إلى تذكرة بمن لم يعد بحاجة إليها.",
-      priceLimitTitle: "حد أقصى لزيادة السعر",
-      priceLimitDesc: "لا يمكن زيادة سعر التذكرة عن سعرها الأصلي بأكثر من دينار أردني واحد.",
       serviceFeeTitle: "رسوم رمزية على البيع",
       serviceFeeDesc: "يوجد رسوم رمزية لعملية بيع التذاكر عبر المنصة.",
     },
@@ -531,7 +526,7 @@ const ar: Dictionary = {
     emailLabel: "البريد الإلكتروني",
     phoneLabel: "رقم الهاتف",
     priceLabel: "السعر المطلوب (دينار أردني)",
-    priceLimitNote: "لا يمكن أن يتجاوز السعر المطلوب سعر الشراء الأصلي للتذكرة بأكثر من دينار أردني واحد.",
+    priceLimitNote: "لا يمكن أن يتجاوز السعر المطلوب سعر الشراء الأصلي للتذكرة.",
     paymentMethodLabel: "طريقة استلام المبلغ",
     paymentOptions: {
       iban: "تحويل بنكي (IBAN)",
@@ -658,7 +653,7 @@ const ar: Dictionary = {
     saveButton: "حفظ التغييرات",
     modifySuccessMessage: "تم تحديث بيانات الدفع الخاصة بك.",
     modifyError: "تعذّر تحديث بيانات الدفع. يرجى المحاولة مرة أخرى لاحقًا.",
-    priceLimitNote: "يمكنك رفع السعر بحد أقصى دينار أردني واحد فوق سعر الشراء الأصلي للتذكرة.",
+    priceLimitNote: "لا يمكن أن يتجاوز السعر المطلوب سعر الشراء الأصلي للتذكرة.",
   },
 };
 

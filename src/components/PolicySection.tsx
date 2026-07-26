@@ -15,7 +15,6 @@ const policyPoints = [
   { key: 'verification', icon: checkCircleIcon },
   { key: 'noScalping', icon: noEntryIcon },
   { key: 'purpose', icon: checkCircleIcon },
-  { key: 'priceLimit', icon: checkCircleIcon },
   { key: 'serviceFee', icon: checkCircleIcon },
 ] as const
 
