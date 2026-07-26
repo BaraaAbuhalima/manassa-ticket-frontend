@@ -28,6 +28,11 @@ export function getTicketsForDateRange(startDate: string, endDate: string, page 
   return apiGet<TicketSummary[]>('/api/ticket/range', { startDate, endDate, page })
 }
 
+// One ticket per day, the cheapest for sale, across the next 14 days.
+export function getCheapestTickets() {
+  return apiGet<TicketSummary[]>('/api/ticket/cheapest')
+}
+
 export function deleteTicket(deleteToken: string) {
   return apiDelete<null>('/api/ticket', { Authorization: `Bearer ${deleteToken}` })
 }

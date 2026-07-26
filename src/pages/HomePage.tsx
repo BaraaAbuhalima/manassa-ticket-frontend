@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Card, Input } from '../components/ui'
 import PolicySection from '../components/PolicySection'
+import CheapestTicketsSection from '../components/CheapestTicketsSection'
 import { defaultTravelDate, toDateOnly } from '../lib/format'
 import { useLanguage } from '../i18n/LanguageContext'
 
@@ -63,6 +64,8 @@ export default function HomePage() {
           <Button type="submit">{t('home.searchButton')}</Button>
         </form>
       </Card>
+
+      <CheapestTicketsSection />
 
       <section className="grid gap-4 sm:grid-cols-3">
         {featureCards.map((card) => (

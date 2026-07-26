@@ -54,6 +54,10 @@ interface Dictionary {
       alertsTitle: string;
       alertsDesc: string;
     };
+    cheapest: {
+      heading: string;
+      subtitle: string;
+    };
     policy: {
       heading: string;
       subtitle: string;
@@ -262,6 +266,10 @@ const en: Dictionary = {
       alertsTitle: "Ticket Alerts",
       alertsDesc:
         "Register to receive an email notification when a ticket matching your travel date becomes available.",
+    },
+    cheapest: {
+      heading: "Best Deals in the Next Two Weeks",
+      subtitle: "The cheapest available ticket for each upcoming travel date.",
     },
     policy: {
       heading: "Our Policy",
@@ -491,6 +499,10 @@ const ar: Dictionary = {
       alertsTitle: "تنبيهات التذاكر",
       alertsDesc:
         "سجّل لتلقّي إشعار عبر البريد الإلكتروني عند توفر تذكرة في تاريخ سفرك.",
+    },
+    cheapest: {
+      heading: "أفضل العروض خلال الأسبوعين القادمين",
+      subtitle: "أرخص تذكرة متاحة لكل تاريخ سفر قادم.",
     },
     policy: {
       heading: "سياستنا",
