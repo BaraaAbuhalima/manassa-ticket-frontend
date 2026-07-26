@@ -82,7 +82,9 @@ export default function FindDatePage() {
             className="max-w-xs"
           />
         </div>
-        <Button type="submit">{t('findDate.searchButton')}</Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? t('findDate.searchingButton') : t('findDate.searchButton')}
+        </Button>
       </form>
 
       {loading && <p className="text-slate-500">{t('common.loadingTickets')}</p>}
@@ -108,11 +110,11 @@ export default function FindDatePage() {
 
       {meta && totalPages > 1 && (
         <div className="flex items-center justify-center gap-3">
-          <Button type="button" disabled={page <= 1} onClick={() => goToPage(page - 1)}>
+          <Button type="button" disabled={loading || page <= 1} onClick={() => goToPage(page - 1)}>
             {t('common.previous')}
           </Button>
           <span className="text-sm text-slate-600">{t('common.pageOf', { page, total: totalPages })}</span>
-          <Button type="button" disabled={page >= totalPages} onClick={() => goToPage(page + 1)}>
+          <Button type="button" disabled={loading || page >= totalPages} onClick={() => goToPage(page + 1)}>
             {t('common.next')}
           </Button>
         </div>

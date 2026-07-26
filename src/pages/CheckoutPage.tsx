@@ -5,7 +5,7 @@ import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { purchaseTicket } from '../api/payments'
 import { ApiError } from '../api/client'
-import { Alert, Button, Card, Input } from '../components/ui'
+import { Alert, Button, Card, Input, Spinner } from '../components/ui'
 import { formatCurrency } from '../lib/format'
 import { useLanguage } from '../i18n/LanguageContext'
 
@@ -93,17 +93,28 @@ function PaymentForm({ details }: { details: PurchaseDetails }) {
     return <Alert kind="success">{t('checkout.paymentSuccess')}</Alert>
   }
 
+  if (confirming) {
+    return (
+      <div className="flex flex-col items-center gap-4 py-6 text-center">
+        <Spinner className="h-8 w-8" />
+        <p className="text-sm text-slate-500">{t('checkout.confirmingMessage')}</p>
+      </div>
+    )
+  }
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <PaymentElement />
       {error && <Alert>{error}</Alert>}
-      {confirming && <p className="text-sm text-slate-500">{t('checkout.confirmingMessage')}</p>}
-      <Button type="submit" disabled={!stripe || submitting || confirming}>
-        {submitting
-          ? t('checkout.processingButton')
-          : confirming
-            ? t('checkout.confirmingButton')
-            : t('checkout.payButton', { amount: formatCurrency(details.amount, language, details.currency.toUpperCase()) })}
+      <Button type="submit" disabled={!stripe || submitting}>
+        {submitting ? (
+          <>
+            <Spinner className="me-2 h-4 w-4" />
+            {t('checkout.processingButton')}
+          </>
+        ) : (
+          t('checkout.payButton', { amount: formatCurrency(details.amount, language, details.currency.toUpperCase()) })
+        )}
       </Button>
     </form>
   )

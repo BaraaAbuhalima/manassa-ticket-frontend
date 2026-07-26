@@ -35,33 +35,6 @@ const featureCards = [
   },
 ] as const
 
-const trustBadges = [
-  {
-    key: 'securePayments',
-    icon: (
-      <path d="M12 3 4.5 6v5.25c0 4.28 3.2 7.9 7.5 8.75 4.3-.85 7.5-4.47 7.5-8.75V6L12 3Zm-1 11-2.5-2.5 1.4-1.4 1.1 1.1 3.1-3.1 1.4 1.4L11 14Z" />
-    ),
-  },
-  {
-    key: 'verifiedTickets',
-    icon: (
-      <path d="m12 2 2.4 1.8 3 .1 1 2.8 2.4 1.7-.9 2.9.9 2.9-2.4 1.7-1 2.8-3 .1L12 22l-2.4-1.8-3-.1-1-2.8L3.2 15.6l.9-2.9-.9-2.9 2.4-1.7 1-2.8 3-.1L12 2Zm-1 13 5-5-1.4-1.4L11 12.2 9.4 10.6 8 12l3 3Z" />
-    ),
-  },
-  {
-    key: 'instantDelivery',
-    icon: (
-      <path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm.4 2L12 12.7 20.6 7H3.4ZM20 8.9l-8 5.3-8-5.3V17h16V8.9Z" />
-    ),
-  },
-  {
-    key: 'support',
-    icon: (
-      <path d="M12 2a9 9 0 0 0-9 9v4a3 3 0 0 0 3 3h1v-8H5v-1a7 7 0 0 1 14 0v1h-2v8h1a1 1 0 0 1-1 1h-3v2h3a3 3 0 0 0 3-3v-3a9 9 0 0 0-9-9Z" />
-    ),
-  },
-] as const
-
 export default function HomePage() {
   const { t } = useLanguage()
   const today = toDateOnly(new Date())
@@ -109,22 +82,6 @@ export default function HomePage() {
             </Card>
           </Link>
         ))}
-      </section>
-
-      <section className="border-t border-slate-200 pt-10">
-        <h2 className="text-center text-lg font-semibold text-slate-900">{t('home.trust.heading')}</h2>
-        <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-4">
-          {trustBadges.map((badge) => (
-            <div key={badge.key} className="flex flex-col items-center gap-3 text-center">
-              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-900">
-                <svg className="h-7 w-7 fill-amber-500" viewBox="0 0 24 24" aria-hidden="true">
-                  {badge.icon}
-                </svg>
-              </span>
-              <span className="text-sm font-medium text-slate-700">{t(`home.trust.${badge.key}`)}</span>
-            </div>
-          ))}
-        </div>
       </section>
 
       <section className="border-t border-slate-200 pt-10">

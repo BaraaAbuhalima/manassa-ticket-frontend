@@ -54,13 +54,6 @@ interface Dictionary {
       alertsTitle: string;
       alertsDesc: string;
     };
-    trust: {
-      heading: string;
-      securePayments: string;
-      verifiedTickets: string;
-      instantDelivery: string;
-      support: string;
-    };
     policy: {
       heading: string;
       subtitle: string;
@@ -79,11 +72,13 @@ interface Dictionary {
   browse: {
     title: string;
     searchButton: string;
+    searchingButton: string;
   };
   findDate: {
     title: string;
     subtitle: string;
     searchButton: string;
+    searchingButton: string;
   };
   sell: {
     title: string;
@@ -131,7 +126,6 @@ interface Dictionary {
     preparingButton: string;
     continueButton: string;
     processingButton: string;
-    confirmingButton: string;
     confirmingMessage: string;
     payButton: string;
     paymentSuccess: string;
@@ -271,13 +265,6 @@ const en: Dictionary = {
       alertsDesc:
         "Register to receive an email notification when a ticket matching your travel date becomes available.",
     },
-    trust: {
-      heading: "Why travellers choose Manassa",
-      securePayments: "Secure Payments",
-      verifiedTickets: "Verified Tickets",
-      instantDelivery: "Instant Email Delivery",
-      support: "Dedicated Support",
-    },
     policy: {
       heading: "Our Policy",
       subtitle: "A few things worth knowing before you buy or sell.",
@@ -298,12 +285,14 @@ const en: Dictionary = {
   browse: {
     title: "Browse Tickets",
     searchButton: "Search Tickets",
+    searchingButton: "Searching…",
   },
   findDate: {
     title: "Find a Ticket",
     subtitle:
       "Select your travel date to view the tickets currently available for purchase.",
     searchButton: "Find Tickets",
+    searchingButton: "Searching…",
   },
   sell: {
     title: "Sell Your Ticket",
@@ -358,7 +347,6 @@ const en: Dictionary = {
     preparingButton: "Preparing payment…",
     continueButton: "Continue to Payment",
     processingButton: "Processing payment…",
-    confirmingButton: "Confirming…",
     confirmingMessage:
       "Verifying your card and confirming the ticket is still yours — this takes a few seconds.",
     payButton: "Pay {{amount}}",
@@ -507,13 +495,6 @@ const ar: Dictionary = {
       alertsDesc:
         "سجّل لتلقّي إشعار عبر البريد الإلكتروني عند توفر تذكرة في تاريخ سفرك.",
     },
-    trust: {
-      heading: "لماذا يختار المسافرون منصة",
-      securePayments: "مدفوعات آمنة",
-      verifiedTickets: "تذاكر موثّقة",
-      instantDelivery: "تسليم فوري عبر البريد",
-      support: "دعم مخصّص",
-    },
     policy: {
       heading: "سياستنا",
       subtitle: "بعض الأمور التي يجدر معرفتها قبل الشراء أو البيع.",
@@ -533,12 +514,14 @@ const ar: Dictionary = {
   browse: {
     title: "تصفح التذاكر",
     searchButton: "البحث عن التذاكر",
+    searchingButton: "جارٍ البحث…",
   },
   findDate: {
     title: "البحث عن تذكرة",
     subtitle:
       "يرجى اختيار تاريخ السفر للاطلاع على التذاكر المتاحة للشراء في ذلك اليوم.",
     searchButton: "البحث عن التذاكر",
+    searchingButton: "جارٍ البحث…",
   },
   sell: {
     title: "بيع تذكرتك",
@@ -590,7 +573,6 @@ const ar: Dictionary = {
     preparingButton: "جارٍ تجهيز عملية الدفع…",
     continueButton: "المتابعة إلى الدفع",
     processingButton: "جارٍ معالجة الدفع…",
-    confirmingButton: "جارٍ التأكيد…",
     confirmingMessage:
       "يتم التحقق من بطاقتك وتأكيد أن التذكرة ما زالت لك — قد يستغرق ذلك بضع ثوانٍ.",
     payButton: "دفع {{amount}}",
