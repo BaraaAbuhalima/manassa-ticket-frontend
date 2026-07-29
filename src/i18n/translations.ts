@@ -252,7 +252,7 @@ const en: Dictionary = {
     registerAlertButton: "Register for a Ticket Alert",
   },
   home: {
-    title: "A Trusted Marketplace for Ticket Resale",
+    title: "A Marketplace for Ticket Resale",
     subtitle:
       "Manassa Ticket Exchange connects travellers who no longer need their ticket with those looking for one on their preferred travel date — safely, simply, and without the hassle.",
     searchButton: "Search Tickets",
