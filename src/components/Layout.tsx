@@ -119,7 +119,7 @@ export default function Layout() {
             </p>
             <p className="mt-2 max-w-xs text-sm text-slate-500">{t('footer.tagline')}</p>
             <a
-              href="mailto:support@manassticket.com"
+              href="mailto:support@manassaticket.com"
               className="mt-3 inline-flex items-center gap-1.5 text-sm text-slate-500 transition-colors hover:text-slate-900"
             >
               <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -130,7 +130,7 @@ export default function Layout() {
                 />
                 <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 7 8.25 6 8.25-6" />
               </svg>
-              support@manassticket.com
+              support@manassaticket.com
             </a>
           </div>
 

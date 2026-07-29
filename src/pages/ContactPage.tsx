@@ -33,8 +33,8 @@ export default function ContactPage() {
       <p className="mt-1 text-sm text-slate-600">{t('contact.subtitle')}</p>
       <p className="mt-1 text-sm text-slate-600">
         {t('contact.directEmailLabel')}{' '}
-        <a href="mailto:support@manassticket.com" className="font-medium text-slate-900 hover:underline">
-          support@manassticket.com
+        <a href="mailto:support@manassaticket.com" className="font-medium text-slate-900 hover:underline">
+          support@manassaticket.com
         </a>
       </p>
 
