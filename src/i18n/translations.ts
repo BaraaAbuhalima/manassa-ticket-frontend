@@ -46,6 +46,8 @@ interface Dictionary {
     title: string;
     subtitle: string;
     searchButton: string;
+    marketplaceNoticeTitle: string;
+    marketplaceNotice: string;
     cards: {
       browseTitle: string;
       browseDesc: string;
@@ -61,6 +63,8 @@ interface Dictionary {
     policy: {
       heading: string;
       subtitle: string;
+      marketplaceNoticeTitle: string;
+      marketplaceNotice: string;
       verificationTitle: string;
       verificationDesc: string;
       noScalpingTitle: string;
@@ -139,11 +143,19 @@ interface Dictionary {
     backToBrowseLink: string;
     secureNotice: string;
     authenticityNotice: string;
+    disclaimerTitle: string;
+    disclaimerBody: string;
+    disclaimerConfirm: string;
+    disclaimerCancel: string;
   };
   ticketDetail: {
     buyButton: string;
     reviewNote: string;
     authenticityNote: string;
+    disclaimerTitle: string;
+    disclaimerBody: string;
+    disclaimerConfirm: string;
+    disclaimerCancel: string;
   };
   notFound: {
     title: string;
@@ -256,6 +268,9 @@ const en: Dictionary = {
     subtitle:
       "Manassa Ticket Exchange connects travellers who no longer need their ticket with those looking for one on their preferred travel date — safely, simply, and without the hassle.",
     searchButton: "Search Tickets",
+    marketplaceNoticeTitle: "Important marketplace notice",
+    marketplaceNotice:
+      "We are only a platform connecting the seller and buyer. We guarantee that the ticket is valid, but it will remain in someone else’s name (the seller’s name), and we are not responsible for any consequences of that.",
     cards: {
       browseTitle: "Browse Tickets",
       browseDesc:
@@ -274,6 +289,9 @@ const en: Dictionary = {
     policy: {
       heading: "Our Policy",
       subtitle: "A few things worth knowing before you buy or sell.",
+      marketplaceNoticeTitle: "Important before buying",
+      marketplaceNotice:
+        "We are only a platform connecting the seller and buyer. We guarantee that the ticket is valid, but it will remain in someone else’s name (the seller’s name), and we are not responsible for any consequences of that.",
       verificationTitle: "Verified, Single-Use Tickets",
       verificationDesc:
         "Every ticket listed is checked for authenticity, and our system blocks it from being sold twice on the platform. We can't, however, guarantee that a seller hasn't also resold the same ticket outside Manassa Ticket Exchange.",
@@ -284,7 +302,8 @@ const en: Dictionary = {
       purposeDesc:
         "This platform exists purely to connect people who need a ticket with people who no longer need theirs.",
       serviceFeeTitle: "A Small Service Fee Applies",
-      serviceFeeDesc: "A nominal fee applies to the ticket sale process on the platform.",
+      serviceFeeDesc:
+        "A nominal fee applies to the ticket sale process on the platform.",
     },
   },
   browse: {
@@ -308,7 +327,8 @@ const en: Dictionary = {
     emailLabel: "Your email address",
     phoneLabel: "Your phone number",
     priceLabel: "Asking price (JOD)",
-    priceLimitNote: "Your asking price cannot exceed the ticket's original purchase price.",
+    priceLimitNote:
+      "Your asking price cannot exceed the ticket's original purchase price.",
     paymentMethodLabel: "Preferred payment method",
     paymentOptions: {
       iban: "Bank transfer (IBAN)",
@@ -370,14 +390,24 @@ const en: Dictionary = {
     secureNotice:
       "All payments are processed securely by our payment provider. Your card details are not stored on our servers.",
     authenticityNotice:
-      "Every ticket listed here is a genuine ticket, and our platform prevents the same ticket from being sold more than once. However, we cannot be held responsible if a seller separately sells or transfers the same ticket through another channel outside this platform.",
+      "Every ticket listed here is genuine, but it may be in someone else’s name. Our marketplace only guarantees that the ticket is valid at the time of sale; we are not responsible for whether it works after purchase or for any issues caused by a separate sale or transfer outside this platform.",
+    disclaimerTitle: "Important before you continue",
+    disclaimerBody:
+      "This ticket is owned by another person and will not be in your name. We are only a marketplace, and we guarantee only that the ticket is valid at the time of sale. We are not responsible if it does not work after purchase.",
+    disclaimerConfirm: "I understand, continue",
+    disclaimerCancel: "Go back",
   },
   ticketDetail: {
     buyButton: "Purchase This Ticket",
     reviewNote:
       "Please review the travel details carefully before proceeding. A confirmation email will be sent to you upon successful payment.",
     authenticityNote:
-      "Every ticket listed here is a genuine ticket, and our platform prevents the same ticket from being sold more than once. However, we cannot be held responsible if a seller separately sells the same ticket outside this platform.",
+      "Every ticket listed here is genuine, but it may be in someone else’s name. Our marketplace only guarantees that the ticket is valid at the time of sale; we are not responsible for whether it works after purchase or for any issues caused by a separate sale or transfer outside this platform.",
+    disclaimerTitle: "Important before you buy",
+    disclaimerBody:
+      "This ticket is owned by another person and will not be in your name. We are only a marketplace, and we guarantee only that the ticket is valid at the time of sale. We are not responsible if it does not work after purchase.",
+    disclaimerConfirm: "I understand, continue",
+    disclaimerCancel: "Cancel",
   },
   notFound: {
     title: "Page Not Found",
@@ -386,34 +416,41 @@ const en: Dictionary = {
   },
   contact: {
     title: "Contact Us",
-    subtitle: "Should you have any questions or require assistance, please submit your inquiry below and our team will respond promptly.",
+    subtitle:
+      "Should you have any questions or require assistance, please submit your inquiry below and our team will respond promptly.",
     nameLabel: "Full name",
     emailLabel: "Email address",
     messageLabel: "Message",
     sendingButton: "Sending…",
     sendButton: "Send Message",
-    successMessage: "Your message has been received. Our team will respond to your inquiry as soon as possible.",
+    successMessage:
+      "Your message has been received. Our team will respond to your inquiry as soon as possible.",
     genericError: "Your message could not be sent. Please try again later.",
     directEmailLabel: "Or email us directly at",
   },
   manageTicket: {
     title: "Manage My Ticket",
-    subtitle: "Enter your reference PIN and the seller email used to list it to view your ticket and seller details, remove it from sale, republish it, or modify the price and payment details.",
+    subtitle:
+      "Enter your reference PIN and the seller email used to list it to view your ticket and seller details, remove it from sale, republish it, or modify the price and payment details.",
     pinLabel: "Reference PIN",
     emailLabel: "Seller email",
     lookupButton: "Look Up Ticket",
     lookingUpButton: "Looking Up…",
-    lookupError: "No ticket could be found for the PIN and email provided. Please verify them and try again.",
+    lookupError:
+      "No ticket could be found for the PIN and email provided. Please verify them and try again.",
     statusForSale: "Listed for Sale",
     statusSold: "Sold",
     statusDeleted: "Removed from Sale",
     statusProcessing: "Being Verified",
     statusRejected: "Not Approved",
     pendingVerification: "Awaiting Verification",
-    processingNotice: "Your ticket is currently being verified. This usually takes only a few minutes, and you will receive an email confirmation once it has been listed for sale. Please check back shortly.",
-    rejectedNotice: "This ticket could not be listed for sale. You are welcome to submit it again from the Sell a Ticket page.",
+    processingNotice:
+      "Your ticket is currently being verified. This usually takes only a few minutes, and you will receive an email confirmation once it has been listed for sale. Please check back shortly.",
+    rejectedNotice:
+      "This ticket could not be listed for sale. You are welcome to submit it again from the Sell a Ticket page.",
     rejectionReasonLabel: "Reason",
-    soldNotice: "This ticket has already been sold and can no longer be modified. Please contact us if you require assistance.",
+    soldNotice:
+      "This ticket has already been sold and can no longer be modified. Please contact us if you require assistance.",
     soldAtMessage: "Sold on {{date}}.",
     sellerInfoTitle: "Seller Information",
     sellerEmailLabel: "Seller email",
@@ -421,9 +458,11 @@ const en: Dictionary = {
     currentPaymentMethodLabel: "Payment method",
     downloadButton: "Download Ticket PDF",
     downloadingButton: "Preparing Download…",
-    downloadError: "Your ticket file could not be downloaded. Please try again later.",
+    downloadError:
+      "Your ticket file could not be downloaded. Please try again later.",
     deleteButton: "Remove Ticket from Sale",
-    deleteConfirmMessage: "Are you sure you wish to remove this ticket from sale? This action cannot be undone.",
+    deleteConfirmMessage:
+      "Are you sure you wish to remove this ticket from sale? This action cannot be undone.",
     confirmDeleteButton: "Yes, Remove It",
     deletingButton: "Removing…",
     cancelButton: "Cancel",
@@ -431,14 +470,18 @@ const en: Dictionary = {
     deleteError: "Your ticket could not be removed. Please try again later.",
     republishButton: "Republish Ticket",
     republishingButton: "Republishing…",
-    republishSuccessMessage: "Your ticket has been republished and is now listed for sale again.",
-    republishError: "Your ticket could not be republished. Please try again later.",
+    republishSuccessMessage:
+      "Your ticket has been republished and is now listed for sale again.",
+    republishError:
+      "Your ticket could not be republished. Please try again later.",
     modifyButton: "Modify Ticket",
     modifyingButton: "Saving…",
     saveButton: "Save Changes",
     modifySuccessMessage: "Your payment details have been updated.",
-    modifyError: "Your payment details could not be updated. Please try again later.",
-    priceLimitNote: "Your asking price cannot exceed the ticket's original purchase price.",
+    modifyError:
+      "Your payment details could not be updated. Please try again later.",
+    priceLimitNote:
+      "Your asking price cannot exceed the ticket's original purchase price.",
   },
 };
 
@@ -491,6 +534,9 @@ const ar: Dictionary = {
     subtitle:
       "تجمع منصة Manassa Ticket Exchange بين المسافرين الذين لم يعودوا بحاجة إلى تذاكرهم ومن يبحثون عن تذكرة في تاريخ سفرهم المفضّل، بطريقة آمنة وسهلة وخالية من التعقيد.",
     searchButton: "البحث عن التذاكر",
+    marketplaceNoticeTitle: "تنبيه مهم بشأن المنصة",
+    marketplaceNotice:
+      "نحن فقط منصة تربط بين البائع والمشتري. نضمن فقط أن التذكرة صالحة، لكنها ستبقى باسم شخص آخر (البائع). لا يوجد طريقة لنقل التذكرة وجعلها باسمك. ولا نتحمل أي مسؤولية أخرى.",
     cards: {
       browseTitle: "تصفح التذاكر",
       browseDesc: "الاطلاع على التذاكر المعروضة للبيع في تاريخ سفرك.",
@@ -507,13 +553,18 @@ const ar: Dictionary = {
     policy: {
       heading: "سياستنا",
       subtitle: "بعض الأمور التي يجدر معرفتها قبل الشراء أو البيع.",
+      marketplaceNoticeTitle: "مهم قبل الشراء",
+      marketplaceNotice:
+        "نحن فقط منصة تربط بين البائع والمشتري. نضمن فقط أن التذكرة صالحة، لكنها ستبقى باسم شخص آخر (البائع). لا يوجد طريقة لنقل التذكرة وجعلها باسمك. ولا نتحمل أي مسؤولية أخرى.",
       verificationTitle: "تذاكر موثّقة تُباع مرة واحدة",
       verificationDesc:
         "يتم التحقق من صحة كل تذكرة معروضة، ويمنع نظامنا بيعها أكثر من مرة عبر المنصة. ومع ذلك، لا يمكننا ضمان عدم قيام البائع ببيعها في مكان آخر خارج منصة Manassa Ticket Exchange.",
       noScalpingTitle: "لا سمسرة ولا تجارة بالتذاكر",
-      noScalpingDesc: "لا نسمح بسمسرة التذاكر عبر المنصة، ولا يمكن زيادة سعر التذكرة عن سعرها الأصلي.",
+      noScalpingDesc:
+        "لا نسمح بسمسرة التذاكر عبر المنصة، ولا يمكن زيادة سعر التذكرة عن سعرها الأصلي.",
       purposeTitle: "مصممة للمساعدة، لا للربح",
-      purposeDesc: "هذه المنصة موجودة فقط لربط من يحتاج إلى تذكرة بمن لم يعد بحاجة إليها.",
+      purposeDesc:
+        "هذه المنصة موجودة فقط لربط من يحتاج إلى تذكرة بمن لم يعد بحاجة إليها.",
       serviceFeeTitle: "رسوم رمزية على البيع",
       serviceFeeDesc: "يوجد رسوم رمزية لعملية بيع التذاكر عبر المنصة.",
     },
@@ -538,7 +589,8 @@ const ar: Dictionary = {
     emailLabel: "بريدك الإلكتروني",
     phoneLabel: "رقم هاتفك",
     priceLabel: "السعر المطلوب (دينار أردني)",
-    priceLimitNote: "لا يمكن أن يتجاوز السعر المطلوب سعر الشراء الأصلي للتذكرة.",
+    priceLimitNote:
+      "لا يمكن أن يتجاوز السعر المطلوب سعر الشراء الأصلي للتذكرة.",
     paymentMethodLabel: "طريقة استلام المبلغ",
     paymentOptions: {
       iban: "تحويل بنكي (IBAN)",
@@ -597,14 +649,24 @@ const ar: Dictionary = {
     secureNotice:
       "تتم معالجة جميع المدفوعات بصورة آمنة عبر مزوّد خدمات الدفع، ولا يتم تخزين بيانات بطاقتك على خوادمنا.",
     authenticityNotice:
-      "جميع التذاكر المعروضة هنا تذاكر أصلية، وتمنع منصتنا بيع التذكرة نفسها أكثر من مرة. غير أننا لا نتحمّل المسؤولية إذا قام البائع ببيع التذكرة نفسها أو تحويلها بصورة منفصلة عبر أي وسيلة أخرى خارج هذه المنصة.",
+      "جميع التذاكر المعروضة هنا أصلية، لكنها قد تكون باسم شخص آخر. نحن فقط منصة تربط بين البائع والمشتري، ونضمن فقط أن التذكرة صالحة. ولا نتحمل أي مسؤولية أخرى.",
+    disclaimerTitle: "مهم قبل المتابعة",
+    disclaimerBody:
+      "هذه التذكرة مملوكة لشخص آخر ولن تكون باسمك. لا يوجد طريقة لنقل التذكرة وجعلها باسمك. نحن فقط منصة تربط بين البائع والمشتري، ونضمن فقط أن التذكرة صالحة. ولا نتحمل أي مسؤولية أخرى.",
+    disclaimerConfirm: "أفهم ذلك، تابع",
+    disclaimerCancel: "العودة",
   },
   ticketDetail: {
     buyButton: "شراء هذه التذكرة",
     reviewNote:
       "يرجى مراجعة تفاصيل الرحلة بعناية قبل إتمام عملية الشراء. سيتم إرسال رسالة تأكيد إلى بريدك الإلكتروني بعد إتمام الدفع.",
     authenticityNote:
-      "جميع التذاكر المعروضة هنا تذاكر أصلية، وتمنع منصتنا بيع التذكرة نفسها أكثر من مرة. غير أننا لا نتحمّل المسؤولية إذا قام البائع ببيع التذكرة نفسها بصورة منفصلة خارج هذه المنصة.",
+      "جميع التذاكر المعروضة هنا أصلية، لكنها قد تكون باسم شخص آخر. نحن فقط منصة تربط بين البائع والمشتري، ونضمن فقط أن التذكرة صالحة. ولا نتحمل أي مسؤولية أخرى.",
+    disclaimerTitle: "مهم قبل الشراء",
+    disclaimerBody:
+      "هذه التذكرة مملوكة لشخص آخر ولن تكون باسمك. لا يوجد طريقة لنقل التذكرة وجعلها باسمك. نحن فقط منصة تربط بين البائع والمشتري، ونضمن فقط أن التذكرة صالحة. ولا نتحمل أي مسؤولية أخرى.",
+    disclaimerConfirm: "أفهم ذلك، تابع",
+    disclaimerCancel: "إلغاء",
   },
   notFound: {
     title: "الصفحة غير موجودة",
@@ -613,34 +675,41 @@ const ar: Dictionary = {
   },
   contact: {
     title: "تواصل معنا",
-    subtitle: "في حال وجود أي استفسار أو حاجة إلى المساعدة، يرجى تقديم طلبك أدناه وسيقوم فريقنا بالرد في أقرب وقت ممكن.",
+    subtitle:
+      "في حال وجود أي استفسار أو حاجة إلى المساعدة، يرجى تقديم طلبك أدناه وسيقوم فريقنا بالرد في أقرب وقت ممكن.",
     nameLabel: "الاسم الكامل",
     emailLabel: "البريد الإلكتروني",
     messageLabel: "الرسالة",
     sendingButton: "جارٍ الإرسال…",
     sendButton: "إرسال الرسالة",
-    successMessage: "تم استلام رسالتك بنجاح. سيقوم فريقنا بالرد على استفسارك في أقرب وقت ممكن.",
+    successMessage:
+      "تم استلام رسالتك بنجاح. سيقوم فريقنا بالرد على استفسارك في أقرب وقت ممكن.",
     genericError: "تعذّر إرسال رسالتك. يرجى المحاولة مرة أخرى لاحقًا.",
     directEmailLabel: "أو راسلنا مباشرة عبر البريد الإلكتروني:",
   },
   manageTicket: {
     title: "إدارة تذكرتي",
-    subtitle: "يرجى إدخال الرمز المرجعي والبريد الإلكتروني للبائع المستخدم عند عرض التذكرة للاطلاع على تفاصيل تذكرتك وبيانات البائع، أو إزالتها من العرض، أو إعادة نشرها، أو تعديل السعر وبيانات الدفع.",
+    subtitle:
+      "يرجى إدخال الرمز المرجعي والبريد الإلكتروني للبائع المستخدم عند عرض التذكرة للاطلاع على تفاصيل تذكرتك وبيانات البائع، أو إزالتها من العرض، أو إعادة نشرها، أو تعديل السعر وبيانات الدفع.",
     pinLabel: "الرمز المرجعي",
     emailLabel: "البريد الإلكتروني للبائع",
     lookupButton: "البحث عن التذكرة",
     lookingUpButton: "جارٍ البحث…",
-    lookupError: "تعذّر العثور على تذكرة بهذا الرمز والبريد الإلكتروني. يرجى التحقق منهما والمحاولة مرة أخرى.",
+    lookupError:
+      "تعذّر العثور على تذكرة بهذا الرمز والبريد الإلكتروني. يرجى التحقق منهما والمحاولة مرة أخرى.",
     statusForSale: "معروضة للبيع",
     statusSold: "تم بيعها",
     statusDeleted: "تمت إزالتها من العرض",
     statusProcessing: "قيد التحقق",
     statusRejected: "لم تتم الموافقة",
     pendingVerification: "بانتظار التحقق",
-    processingNotice: "تذكرتك قيد التحقق حاليًا. تستغرق هذه العملية عادةً بضع دقائق فقط، وستصلك رسالة تأكيد عبر البريد الإلكتروني فور عرضها للبيع. يرجى المحاولة مرة أخرى بعد قليل.",
-    rejectedNotice: "تعذّر عرض هذه التذكرة للبيع. يمكنك تقديمها مرة أخرى من صفحة بيع التذاكر.",
+    processingNotice:
+      "تذكرتك قيد التحقق حاليًا. تستغرق هذه العملية عادةً بضع دقائق فقط، وستصلك رسالة تأكيد عبر البريد الإلكتروني فور عرضها للبيع. يرجى المحاولة مرة أخرى بعد قليل.",
+    rejectedNotice:
+      "تعذّر عرض هذه التذكرة للبيع. يمكنك تقديمها مرة أخرى من صفحة بيع التذاكر.",
     rejectionReasonLabel: "السبب",
-    soldNotice: "تم بيع هذه التذكرة بالفعل ولم يعد بالإمكان تعديلها. يرجى التواصل معنا إذا احتجت إلى المساعدة.",
+    soldNotice:
+      "تم بيع هذه التذكرة بالفعل ولم يعد بالإمكان تعديلها. يرجى التواصل معنا إذا احتجت إلى المساعدة.",
     soldAtMessage: "تم البيع بتاريخ {{date}}.",
     sellerInfoTitle: "معلومات البائع",
     sellerEmailLabel: "البريد الإلكتروني للبائع",
@@ -650,13 +719,15 @@ const ar: Dictionary = {
     downloadingButton: "جارٍ تجهيز التحميل…",
     downloadError: "تعذّر تحميل ملف تذكرتك. يرجى المحاولة مرة أخرى لاحقًا.",
     deleteButton: "إزالة التذكرة من العرض",
-    deleteConfirmMessage: "هل أنت متأكد من رغبتك في إزالة هذه التذكرة من العرض؟ لا يمكن التراجع عن هذا الإجراء.",
+    deleteConfirmMessage:
+      "هل أنت متأكد من رغبتك في إزالة هذه التذكرة من العرض؟ لا يمكن التراجع عن هذا الإجراء.",
     confirmDeleteButton: "نعم، قم بالإزالة",
     deletingButton: "جارٍ الإزالة…",
     cancelButton: "إلغاء",
     republishButton: "إعادة نشر التذكرة",
     republishingButton: "جارٍ إعادة النشر…",
-    republishSuccessMessage: "تمت إعادة نشر تذكرتك وأصبحت معروضة للبيع مرة أخرى.",
+    republishSuccessMessage:
+      "تمت إعادة نشر تذكرتك وأصبحت معروضة للبيع مرة أخرى.",
     republishError: "تعذّرت إعادة نشر تذكرتك. يرجى المحاولة مرة أخرى لاحقًا.",
     deleteSuccessMessage: "تمت إزالة تذكرتك من العرض.",
     deleteError: "تعذّر إزالة تذكرتك. يرجى المحاولة مرة أخرى لاحقًا.",
@@ -665,7 +736,8 @@ const ar: Dictionary = {
     saveButton: "حفظ التغييرات",
     modifySuccessMessage: "تم تحديث بيانات الدفع الخاصة بك.",
     modifyError: "تعذّر تحديث بيانات الدفع. يرجى المحاولة مرة أخرى لاحقًا.",
-    priceLimitNote: "لا يمكن أن يتجاوز السعر المطلوب سعر الشراء الأصلي للتذكرة.",
+    priceLimitNote:
+      "لا يمكن أن يتجاوز السعر المطلوب سعر الشراء الأصلي للتذكرة.",
   },
 };
 
